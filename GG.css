@@ -1,62 +1,102 @@
-.search-container {
-    display: flex;
-    align-items: center;
-    position: absolute; /* Position it absolutely */
-    top: 230px; /* Adjust this value to move it down from the top */
-    left: 50%; /* Center it horizontally */
-    transform: translateX(-50%); /* Center it properly */
-    z-index: 10; /* Ensure it appears above the image */
-
-    border-radius: 25px; /*round them corners my guy*/
-
-}
-
-#search-input {
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px; /* Match the container's border radius */
-    width: 400px; /* Width of the search input */
-    flex: 1; 
-    background-image: url('searfch\ bar.png');
-    background-size: cover;
-    background-repeat: no-repeat; 
-    overflow:hidden; 
-}
-
-#search-button {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007BFF; /* Bootstrap primary color */
+body, html {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 1200px;
+    overflow-y: visible;
+    font-family: Papyrus, Arial, sans-serif;
+    text-align: center;
     color: white;
-    cursor: pointer;
-    margin-left: 10px; /* Space between input and button */
-}
+  }
 
-#search-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
-}
-
-.top {
-    display:flex; 
+  
+  .top {
+    display: flex; 
     align-items: center; /* Center vertically */
     justify-content: center;
-    position: absolute;
-    top:0;
-    left:0;
+    position: relative;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 279px; 
-    background-image: url(for\ fyp\ top\ bg.jpg); 
-    background-position: top; 
+    background-image: 
+        linear-gradient(rgba(255, 218, 185, 0.4), rgba(255, 218, 185, 0.4)), 
+        url('for fyp top bg.jpg'),
+        url('anoptherboku UwU.png'); 
     background-size: cover;
-    overflow:hidden; 
-    object-fit: cover; 
+    background-position: center; 
+    overflow: hidden; 
     text-align: center;
-    color:white; 
-    font-family:Papyrus; 
+    color: white; 
+    font-family: Papyrus, Arial, sans-serif; 
     font-size: 50px;
+    z-index: 1;
+}
+
+.search-container {
+    position: absolute;
+    bottom: 15px; /* Moved closer to the bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar {
+    width: 100%; 
+    max-width: 500px; /* Decreased max-width */
+    background: rgba(255, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    border-radius: 30px; /* Reduced border-radius for smaller appearance */
+    padding: 5px 10px; /* Reduced padding */
+    backdrop-filter: blur(4px) saturate(180%);
+}
+
+.search-bar input {
+    background: transparent; 
+    flex: 1; 
+    border: 0; 
+    outline: none; 
+    padding: 5px; /* Reduced padding */
+    font-size: 16px; /* Reduced font size */
+    color: #ffffff; 
+}
+
+.search-bar:hover,
+.search-bar:focus {
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+  transform: scale(1.05);
+  outline: none;
+}
+
+
+::placeholder {
+    color: rgb(106, 22, 22);
+}
+
+.search-bar button img {
+    width: 40px; /* Reduced icon size */
+    object-fit:contain;
+    margin-left: -5px;
+    margin-top: -2px;
+}
+
+.search-bar button {
+    border: 0;
+    border-radius: 50%;
+    width: 40px; /* Reduced button width */
+    height: 40px; /* Reduced button height */
+    background: transparent;
+    cursor: pointer;
+}
+
+.search-bar button:hover,
+.search-bar button:focus {
+  box-shadow: 0 0 12px rgba(87, 91, 112, 0.7);
+  transform: scale(1.05);
+  outline: none;
 }
 
 
@@ -84,20 +124,432 @@
     margin: 0 20px; /* Space between the bars and the text */
 }
 
-
-body{
-    background-image: url("bookshelf for fyp.jpg");
-    background-size: cover;
-    background-size: 1600px;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin: 0; 
-    height: 100vh; 
-    display: flex; /* Use flexbox for body */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
+.profile-icon-container {
+    position: absolute; /* Positions the container absolutely within its nearest positioned ancestor */
+    top: 210px; /* Positions the container 20 pixels from the top of its containing element */
+    right: 20px; /* Positions the container 20 pixels from the right of its containing element */
+    z-index: 2; /* Sets the stacking order of the container, ensuring it appears above other elements with lower z-index values */
 }
 
+.icon {
+    width: 55px; /* Sets the width of the icon to 44 pixels */
+    height: 55px; /* Sets the height of the icon to 44 pixels */
+    border-radius: 50%; /* Makes the icon circular by setting the border radius to 50% */
+    overflow: hidden; /* Hides any content that overflows the bounds of the icon */
+    cursor: pointer; /* Changes the cursor to a pointer when hovering over the icon, indicating it's clickable */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow around the icon for depth */
+    transition: box-shadow 0.3s ease, transform 0.2s ease; /* Smoothly transitions the box-shadow and transform properties on hover */
+    background-color: rgb(0, 0, 0); /* Sets the background color of the icon to black */
+    display: flex; /* Uses flexbox layout for the icon's content */
+    justify-content: center; /* Centers the content horizontally within the icon */
+    align-items: center; /* Centers the content vertically within the icon */
+  }
+  .icon:hover,
+  .icon:focus {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7); /* Increases the shadow on hover or focus for emphasis */
+    transform: scale(1.05); /* Slightly enlarges the icon on hover or focus for a visual effect */
+    outline: none; /* Removes the default outline that appears on focus */
+  }
+
+  /* Profile image inside the icon */
+  .icon img {
+   width: 100px; /* Sets the image width to fill the icon */
+    height: 100%; /* Sets the image height to fill the icon */
+    display: block; /* Prevents any extra space below the image (common with inline elements) */
+  }
+  /* Mobile friendly tap area */
+  @media (max-width: 600px) {
+    .icon {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+
+/* shopping cart */
+.shop-container {
+    position: absolute; /* Positions the container absolutely within its nearest positioned ancestor */
+    top: 210px; /* Positions the container 20 pixels from the top of its containing element */
+    right: 100px; /* Positions the container 20 pixels from the right of its containing element */
+    z-index: 2; /* Sets the stacking order of the container, ensuring it appears above other elements with lower z-index values */
+}
+
+.shopping {
+    width: 55px; /* Sets the width of the icon to 44 pixels */
+    height: 55px; /* Sets the height of the icon to 44 pixels */
+    border-radius: 50%; /* Makes the icon circular by setting the border radius to 50% */
+    overflow: hidden; /* Hides any content that overflows the bounds of the icon */
+    cursor: pointer; /* Changes the cursor to a pointer when hovering over the icon, indicating it's clickable */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow around the icon for depth */
+    transition: box-shadow 0.3s ease, transform 0.2s ease; /* Smoothly transitions the box-shadow and transform properties on hover */
+    background-color: rgb(0, 0, 0); /* Sets the background color of the icon to black */
+    display: flex; /* Uses flexbox layout for the icon's content */
+    justify-content: center; /* Centers the content horizontally within the icon */
+    align-items: center; /* Centers the content vertically within the icon */
+  }
+  .shopping:hover,
+  .shopping:focus {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7); /* Increases the shadow on hover or focus for emphasis */
+    transform: scale(1.05); /* Slightly enlarges the icon on hover or focus for a visual effect */
+    outline: none; /* Removes the default outline that appears on focus */
+  }
+
+  /* Profile image inside the icon */
+  .shopping img {
+   width: 35px; /* Sets the image width to fill the icon */
+    height: 35px; /* Sets the image height to fill the icon */
+    display: block; /* Prevents any extra space below the image (common with inline elements) */
+  }
+
+  /*favourite*/
+  .favourite-container {
+    position: absolute; /* Positions the container absolutely within its nearest positioned ancestor */
+    top: 210px; /* Positions the container 20 pixels from the top of its containing element */
+    right: 185px; /* Positions the container 20 pixels from the right of its containing element */
+    z-index: 2; /* Sets the stacking order of the container, ensuring it appears above other elements with lower z-index values */
+}
+
+.fav {
+    width: 55px; /* Sets the width of the icon to 44 pixels */
+    height: 55px; /* Sets the height of the icon to 44 pixels */
+    border-radius: 50%; /* Makes the icon circular by setting the border radius to 50% */
+    overflow: hidden; /* Hides any content that overflows the bounds of the icon */
+    cursor: pointer; /* Changes the cursor to a pointer when hovering over the icon, indicating it's clickable */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow around the icon for depth */
+    transition: box-shadow 0.3s ease, transform 0.2s ease; /* Smoothly transitions the box-shadow and transform properties on hover */
+    background-color: rgb(0, 0, 0); /* Sets the background color of the icon to black */
+    display: flex; /* Uses flexbox layout for the icon's content */
+    justify-content: center; /* Centers the content horizontally within the icon */
+    align-items: center; /* Centers the content vertically within the icon */
+  }
+  .fav:hover,
+  .fav:focus {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7); /* Increases the shadow on hover or focus for emphasis */
+    transform: scale(1.05); /* Slightly enlarges the icon on hover or focus for a visual effect */
+    outline: none; /* Removes the default outline that appears on focus */
+  }
+
+  /* Profile image inside the icon */
+  .fav img {
+   width: 40px; /* Sets the image width to fill the icon */
+    height: 40px; /* Sets the image height to fill the icon */
+    display: block; /* Prevents any extra space below the image (common with inline elements) */
+  }
+
+.rect img{
+position: absolute;
+top: 209px;
+right: 0px;
+left: 1272px; 
+width: 220px;
+height: 58px; 
+opacity: 0.7;
+}
+
+.pblish{
+  position: absolute;
+      display: inline-flex;
+  left: 20px; 
+  background-color: #7a3d26; /* Blue background color */
+  color: #ffffff; /* White text color */
+  padding: 10px 20px; /* Adjust padding for size */
+  border: 2px solid #7a3d26; /* Blue border */
+  height: 53px;
+  width: 200px;
+  border-radius: 50px; /* Border radius property to add rounded corners */
+  cursor: pointer; /* Changes cursor to pointer when button is hovered */
+      z-index: 2;
+      top: 210px; 
+  font-size: 30px;
+  font-family:  Papyrus, Arial, sans-serif;
+  font-weight: bold;
+  text-align: left;
+  gap: 8px; 
+  align-items: center;
+}
+  
+.pblish img{
+  display: flex;
+    display: inline-block;
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    justify-content: flex-start;
+    margin-left: 5px; 
+  }
+
+.pblish:hover,.pblish:focus{
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7); /* Increases the shadow on hover or focus for emphasis */
+    transform: scale(1.05); /* Slightly enlarges the icon on hover or focus for a visual effect */
+    outline: none; /* Removes the default outline that appears on focus */
+}
+
+
+   @media (max-width: 600px) {
+       .your-element {
+           background-image: url("shelf.png");
+       }
+   }
+   @media (min-width: 601px) {
+       .your-element {
+           background-image: url("shelf.png");
+       }
+   }
+
+
+   .tape{
+    position: relative;
+   }
+
+     .tape .tapetext {
+    position: absolute;
+    top: 40px;
+    left: 625px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    pointer-events: none; /* So text doesn't block image interactions */
+  }
+
+   .tape img {
+       position: absolute;
+       top: -20px;
+       left: 525px; 
+       z-index: 10; /* Adjust this value as needed */
+       height: 160px;
+   }
+
+/* Reset any potential conflicts */
+.goods-scroll {
+  display: flex;
+  animation: scroll-left 12s linear infinite;
+  will-change: transform;
+  position: relative;
+  z-index: 10;
+  /* Force spacing to work: */
+  align-items: flex-start; /* Prevents strange stretching */
+  flex-wrap: nowrap; /* Ensures single line */
+}
+
+/* Base image styles */
+.goods-scroll img {
+  height: 300px;
+  width: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.7);
+  user-select: none;
+  display: block;
+  flex-shrink: 0; /* CRITICAL - prevents shrinking */
+}
+
+/* Individual spacing */
+
+
+
+.scroll-image1 {
+  transform: translateX(-90px) ;
+}
+.scroll-image2 {
+  transform: translateX(510px) ;
+}
+.scroll-image3{
+  transform: translateX(-530px) ;
+}
+
+
+
+.scroll-image1 { margin-right: 50px; }
+.scroll-image2 { margin-right: 100px; }
+.scroll-image3 { margin-right: 30px; }
+
+/*@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+   /*next*/
+      .tape1{
+    position: relative;
+   }
+
+     .tape1 .tapetext1 {
+    position: absolute;
+    top: 680px;
+    left: 680px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    pointer-events: none; /* So text doesn't block image interactions */
+  }
+
+   .tape1 img {
+       position: absolute;
+       top: 620px;
+       left: 525px; 
+       z-index: 10; /* Adjust this value as needed */
+       height: 160px;
+   }
+
+      /*next*/
+         .tape2{
+    position: relative;
+   }
+
+     .tape2 .tapetext2 {
+    position: absolute;
+    top: 1300px;
+    left: 680px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    pointer-events: none; /* So text doesn't block image interactions */
+  }
+
+   .tape2 img {
+       position: absolute;
+       top: 1240px;
+       left: 525px; 
+       z-index: 10; /* Adjust this value as needed */
+       height: 160px;
+   }
+   
+   /*next*/
+
+            .tape3{
+    position: relative;
+   }
+
+     .tape3 .tapetext3 {
+    position: absolute;
+    top: 1900px;
+    left: 680px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    pointer-events: none; /* So text doesn't block image interactions */
+  }
+
+   .tape3 img {
+       position: absolute;
+       top: 1850px;
+       left: 525px; 
+       z-index: 10; /* Adjust this value as needed */
+       height: 160px;
+   }
+
+   /*next*/
+
+               .tape4{
+    position: relative;
+   }
+
+     .tape4 .tapetext4 {
+    position: absolute;
+    top: 2510px;
+    left: 680px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    pointer-events: none; /* So text doesn't block image interactions */
+  }
+
+   .tape4 img {
+       position: absolute;
+       top: 2460px;
+       left: 525px; 
+       z-index: 10; /* Adjust this value as needed */
+       height: 160px;
+   }
+
+   /*next*/
+
+                  .tape5{
+    position: relative;
+   }
+
+     .tape5 .tapetext5 {
+    position: absolute;
+    top: 3120px;
+    left: 680px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    pointer-events: none; /* So text doesn't block image interactions */
+  }
+
+   .tape5 img {
+       position: absolute;
+       top: 3060px;
+       left: 525px; 
+       z-index: 10; /* Adjust this value as needed */
+       height: 160px;
+   }
+
+   /*next*/
+
+                     .tape6{
+    position: relative;
+   }
+
+     .tape6 .tapetext6 {
+    position: absolute;
+    top: 3730px;
+    left: 640px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    pointer-events: none; /* So text doesn't block image interactions */
+  }
+
+   .tape6 img {
+       position: absolute;
+       top: 3680px;
+       left: 525px; 
+       z-index: 10; /* Adjust this value as needed */
+       height: 160px;
+   }
+
+
+
+
+.classtest {
+    position: relative;
+    /* background-image: url("anoptherboku.jpg"); */
+    /* background-image: url("anoptherboku.jpg"); */
+    background-size: 100% 100%;  
+    width: 3500px;
+    height: 4500px;
+    /* background-position:top;  */
+    background-repeat: no-repeat;
+    z-index: 1;
+    /* margin: 0; */
+    /* Removed height: 100vh to allow scrolling */
+    
+    width: 99vw;
+    /* min-height: 100%;    display: block; remove flexbox to allow natural flow for scrolling */
+    /* If you want the content centered horizontally only, use text-align */
+    /* text-align: top; */
+    /* align-items: flex-end; */
+}
 
 
 /*Error*/
