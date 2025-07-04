@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Otaku Haven</title>
+    <link rel="stylesheet" href="searchresultdesign.css"> 
+</head> 
+<body>
+    <script src="searchresultpage.js"></script>
+
+    <form action="OtakuHavenProto.html" method="GET">
+        <button type="submit" class="buttonback" aria-label="Back">BACK</button>
+    </form>
+
+    <main class="background" role="main">
+        <div class="top">
+            <div class="search-container">
+                <form action="searchresultpage.html" method="GET" class="search-bar" id="searchForm">
+                    <input type="text" name="query" id="search-input" placeholder="Search for posters, manga, or conditions..." style="flex:1;"> 
+                    <select name="category" id="categorySelect" style="height:36px; min-width:90px; max-width:120px; margin-left:8px; padding:0 10px; border-radius:18px; border:1px solid #e0bfae; background:#fff8f3; color:#6a1616; font-family:'Indie Flower', cursive; font-size:15px; outline:none; box-shadow:0 1px 4px rgba(255,218,185,0.15);">
+                        <option value="all">All</option>
+                        <option value="manga">Manga</option>
+                        <option value="manhwa">Manhwa</option>
+                        <option value="manhua">Manhua</option>
+                        <option value="comic">Comic</option>
+                        <option value="novel">Novel</option>
+                        <option value="stationary">Stationary</option>
+                    </select>
+                    <button type="submit"><img src="images/search icon.png" alt="Search"></button>
+                </form>
+            </div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="center">Otaku Haven</div>
+        </div>
+        
+        <div class="app-container">
+            <section class="results-area" aria-label="Search Results">
+                <header class="results-header">
+                    <h2>Results for: <span id="search-query"></span></h2>
+                    <div class="filter-options">
+                        <label class="filter-label">Filter by Condition:</label>
+                        <div class="filter-buttons">
+                            <button type="button" class="filter-btn active" data-filter="all">All</button>
+                            <button type="button" class="filter-btn" data-filter="first">First Hand</button>
+                            <button type="button" class="filter-btn" data-filter="second">Second Hand</button>
+                            <button type="button" class="filter-btn" data-filter="third">Third Hand</button>
+                        </div>
+                    </div>
+                    <div class="results-count">
+                        <span id="results-count">0</span> results found
+                    </div>
+                </header>
+                
+                <div class="results-list" id="results-list">
+                    <!-- Search results will be populated here -->
+                </div>
+                
+                <div class="no-results" id="no-results" style="display: none;">
+                    <h3>No results found</h3>
+                    <p>Try searching for:</p>
+                    <ul>
+                        <li>Manga titles: "One Piece", "Jujutsu Kaisen", "Chainsaw Man"</li>
+                        <li>Conditions: "First Hand", "Second Hand", "Third Hand"</li>
+                        <li>Categories: "Manga", "Manhwa", "Comics", "Novels"</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <style>
+        /* ...existing styles... */
+        #categorySelect {
+            height: 36px;
+            min-width: 90px;
+            max-width: 120px;
+            margin-left: 8px;
+            padding: 0 10px;
+            border-radius: 18px;
+            border: 1px solid #e0bfae;
+            background: #fff8f3;
+            color: #6a1616;
+            font-family: 'Indie Flower', cursive;
+            font-size: 15px;
+            outline: none;
+            box-shadow: 0 1px 4px rgba(255,218,185,0.15);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #categorySelect:focus {
+            border-color: #ffbfae;
+            box-shadow: 0 0 8px #ffdabe;
+        }
+        #categorySelect option {
+            background: #fff8f3;
+            color: #6a1616;
+        }
+    </style>
+
+    <script>
+        // Get the search query from the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('query');
+
+        // Display the query in the header
+        document.getElementById('search-query').textContent = query || 'All Products';
+        
+        // Set the search input value to the query
+        document.getElementById('search-input').value = query || '';
+
+        // Initialize search results when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof displaySearchResults === 'function') {
+                displaySearchResults(query);
+            }
+            
+            // Add filter button event listeners
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Filter results
+                    const filter = this.getAttribute('data-filter');
+                    filterResults(filter, query);
+                });
+            });
+
+            // Enhanced search bar logic for category filter
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('search-input');
+            const categorySelect = document.getElementById('categorySelect');
+            if (searchForm && searchInput && categorySelect) {
+                // Auto-redirect on category change
+                categorySelect.addEventListener('change', function() {
+                    const category = categorySelect.value;
+                    if (category !== 'all') {
+                        window.location.href = `searchresultpage.html?category=${encodeURIComponent(category)}`;
+                    }
+                });
+                // Submit logic for search icon
+                searchForm.addEventListener('submit', function(e) {
+                    const category = categorySelect.value;
+                    const query = searchInput.value.trim();
+                    if (category !== 'all') {
+                        e.preventDefault();
+                        window.location.href = `searchresultpage.html?category=${encodeURIComponent(category)}`;
+                    } else if (query.length > 0) {
+                        // Let the form submit as normal (query param)
+                    } else {
+                        e.preventDefault();
+                        window.location.href = `searchresultpage.html`;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

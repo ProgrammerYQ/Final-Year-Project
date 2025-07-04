@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Otaku Haven</title>
+    <link rel="stylesheet" href="login.css">
+    <style type="text/css">
+        body{
+            background-image: url(background\ image.png);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-box" id="Login-form">
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <h2>Welcome Back!</h2>
+                <p class="subtitle">Login to your Otaku Haven account</p>
+                
+                <div class="form-group">
+                    <input type="text" id="username" name="username" placeholder="Username or Email" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                
+                <div class="forgot-password">
+                    <a href="forgot_password.php">Forgot Password?</a>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="login-btn">Login</button>
+                    <button type="button" class="cancel-btn" onclick="window.location.href='OtakuHavenProto.html'">Cancel</button>
+                </div>
+                
+                <div class="signup-link">
+                    <p>Don't have an account? <a href="sign in.html">Create Account</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Handle login form submission
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            // Disable submit button to prevent double submission
+            const submitBtn = event.target.querySelector('.login-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Logging in...';
+            submitBtn.disabled = true;
+            
+            const formData = new FormData(event.target);
+            const usernameOrEmail = formData.get('username').trim();
+            const password = formData.get('password');
+            
+            // Validate inputs
+            if (!usernameOrEmail || !password) {
+                alert('Please enter both username/email and password.');
+                resetButton(submitBtn, originalText);
+                return;
+            }
+            
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Find user by username or email
+            const user = users.find(u => 
+                (u.username.toLowerCase() === usernameOrEmail.toLowerCase()) || 
+                (u.email.toLowerCase() === usernameOrEmail.toLowerCase())
+            );
+            
+            if (!user) {
+                alert('User not found. Please check your username/email or create a new account.');
+                resetButton(submitBtn, originalText);
+                return;
+            }
+            
+            // Check password
+            if (user.password !== password) {
+                alert('Incorrect password. Please try again.');
+                resetButton(submitBtn, originalText);
+                return;
+            }
+            
+            try {
+                // Update last login time
+                user.lastLogin = new Date().toISOString();
+                
+                // Update user in storage
+                const userIndex = users.findIndex(u => u.username === user.username);
+                if (userIndex !== -1) {
+                    users[userIndex] = user;
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                // Set current user
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Update button text
+                submitBtn.textContent = 'Login Successful! Redirecting...';
+                
+                // Show success message and redirect
+                setTimeout(() => {
+                    alert(`Welcome back, ${user.username}! You have been successfully logged in.`);
+                    
+                    // Ensure all data is saved before redirect
+                    setTimeout(() => {
+                        // Force redirect to OtakuHavenProto.html
+                        window.location.replace('OtakuHavenProto.html');
+                    }, 100);
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error during login:', error);
+                alert('There was an error during login. Please try again.');
+                resetButton(submitBtn, originalText);
+            }
+        }
+
+        // Helper function to reset button state
+        function resetButton(button, originalText) {
+            button.textContent = originalText;
+            button.disabled = false;
+        }
+
+        // Add some demo users if none exist (for testing)
+        document.addEventListener('DOMContentLoaded', function() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Add demo users if no users exist
+            if (users.length === 0) {
+                const demoUsers = [
+                    {
+                        username: 'demo_user',
+                        email: 'demo@example.com',
+                        password: 'password123',
+                        phone: '+1 555 123 4567',
+                        fullName: 'Demo User',
+                        birthdate: '1990-01-01',
+                        newsletter: true,
+                        memberSince: new Date().toISOString(),
+                        totalOrders: 0,
+                        lastLogin: new Date().toISOString()
+                    },
+                    {
+                        username: 'anime_lover',
+                        email: 'anime@example.com',
+                        password: 'anime123',
+                        phone: '+1 555 987 6543',
+                        fullName: 'Anime Lover',
+                        birthdate: '1995-05-15',
+                        newsletter: false,
+                        memberSince: new Date().toISOString(),
+                        totalOrders: 5,
+                        lastLogin: new Date().toISOString()
+                    }
+                ];
+                
+                localStorage.setItem('users', JSON.stringify(demoUsers));
+                console.log('Demo users created for testing');
+            }
+        });
+
+        // Add real-time validation feedback
+        document.getElementById('username').addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value) {
+                this.style.borderColor = '#27ae60';
+            } else {
+                this.style.borderColor = '#e0e0e0';
+            }
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            const value = this.value;
+            if (value.length >= 1) {
+                this.style.borderColor = '#27ae60';
+            } else {
+                this.style.borderColor = '#e0e0e0';
+            }
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const activeElement = document.activeElement;
+                if (activeElement.tagName === 'INPUT') {
+                    const form = document.getElementById('loginForm');
+                    if (form) {
+                        form.dispatchEvent(new Event('submit'));
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

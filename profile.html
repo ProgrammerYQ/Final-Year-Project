@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Profile - Otaku Haven</title>
+    <link rel="stylesheet" href="profile.css">
+    <style type="text/css">
+        body{
+            background-image: url(background\ image.png);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="title">VIEW PROFILE</h2>
+        
+        <div class="profile-header">
+        <div class="profile-pic">
+                <div id="profileImageContainer" class="profile-image-container">
+                    <img id="profileImage" src="" alt="Profile Picture" style="display: none;">
+                    <div id="defaultProfileIcon" class="default-profile-icon">
+                        <span>nothing :(</span>
+                    </div>
+                </div>
+                <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                <label for="profileImageInput" id="uploadBtn" class="upload-btn" style="display: none;">Change Photo</label>
+            </div>
+        </div>
+
+        <div class="profile-info">
+            <h3>Account Information</h3>
+            <div class="info-item">
+                <label>Name:</label>
+                <span id="displayName">John Doe</span>
+            </div>
+            <div class="info-item">
+                <label>Email:</label>
+                <span id="displayEmail">john.doe@example.com</span>
+            </div>
+            <div class="info-item">
+                <label>Phone:</label>
+                <span id="displayPhone">+1 234 567 8900</span>
+            </div>
+            <div class="info-item">
+                <label>Address:</label>
+                <span id="displayAddress">123 Main Street, City, State 12345</span>
+            </div>
+            <div class="info-item">
+                <label>Bio:</label>
+                <span id="displayBio">Anime and manga enthusiast who loves collecting merchandise and reading comics.</span>
+            </div>
+        </div>
+
+        <div class="published-products">
+            <h3>My Published Products</h3>
+            <div id="publishedProductsGrid" class="products-grid">
+                <!-- Published products will be loaded here -->
+            </div>
+        </div>
+
+        <div class="order-history">
+            <h3>Order History</h3>
+            <div id="orderList">
+                <div class="order-item">
+                    <p><strong>Order ID:</strong> ORD-2024-001</p>
+                    <p><strong>Date:</strong> 12/15/2024</p>
+                    <p><strong>Total:</strong> $45.99</p>
+                    <p><strong>Status:</strong> Delivered</p>
+                </div>
+                <div class="order-item">
+                    <p><strong>Order ID:</strong> ORD-2024-002</p>
+                    <p><strong>Date:</strong> 12/10/2024</p>
+                    <p><strong>Total:</strong> $32.50</p>
+                    <p><strong>Status:</strong> Shipped</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="wishlist">
+            <h3>My Wishlist</h3>
+            <div id="wishlistItems">
+                <div class="wishlist-item">
+                    <img src="Japanese manga/demonslayer.jpg" alt="Demon Slayer" style="width: 50px; height: 50px; object-fit: cover;">
+                    <span>Demon Slayer Vol. 1</span>
+                    <span>$12.99</span>
+                </div>
+                <div class="wishlist-item">
+                    <img src="Japanese manga/Jujutsu_kaisen.jpg" alt="Jujutsu Kaisen" style="width: 50px; height: 50px; object-fit: cover;">
+                    <span>Jujutsu Kaisen Vol. 2</span>
+                    <span>$14.99</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="edit-btn round-btn" onclick="openEditProfile()">Edit Profile</button>
+            <button class="logout-btn round-btn" onclick="logout()">Logout</button>
+            <button class="cancel-btn" onclick="window.location.href='OtakuHavenProto.html'">Back to Home</button>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h3>Edit Profile</h3>
+            
+            <!-- Profile Image Section in Modal -->
+            <div class="modal-profile-image">
+                <div class="modal-image-container">
+                    <img id="modalProfileImage" src="" alt="Profile Picture" style="display: none;">
+                    <div id="modalDefaultIcon" class="modal-default-icon">
+                        <span>nothing :(</span>
+                    </div>
+                </div>
+                <input type="file" id="modalImageInput" accept="image/*" style="display: none;">
+                <label for="modalImageInput" class="modal-upload-btn">Change Photo</label>
+            </div>
+            
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="editName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="editEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone:</label>
+                    <input type="tel" id="editPhone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Address:</label>
+                    <textarea id="editAddress" name="address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Bio:</label>
+                    <textarea id="editBio" name="bio" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="save-btn">Save Changes</button>
+                    <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Please log in to view your profile.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Load user profile data
+            loadUserProfile();
+        });
+
+        // Load user profile data
+        function loadUserProfile() {
+            // Load user data from localStorage or session
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            if (user.name) {
+                document.getElementById('displayName').textContent = user.name;
+                document.getElementById('displayEmail').textContent = user.email || 'john.doe@example.com';
+                document.getElementById('displayPhone').textContent = user.phone || '+1 234 567 8900';
+                document.getElementById('displayAddress').textContent = user.address || '123 Main Street, City, State 12345';
+                document.getElementById('displayBio').textContent = user.description || 'Anime and manga enthusiast who loves collecting merchandise and reading comics.';
+            }
+        }
+
+        function loadPublishedProducts() {
+            const publishedItems = JSON.parse(localStorage.getItem('publishedItems') || '[]');
+            const productsGrid = document.getElementById('publishedProductsGrid');
+            
+            if (publishedItems.length === 0) {
+                productsGrid.innerHTML = '<p class="no-products">No published products yet.</p>';
+                return;
+            }
+
+            let html = '';
+            publishedItems.forEach(item => {
+                html += `
+                    <div class="product-card">
+                        <img src="${item.image || 'images/default.jpg'}" alt="${item.title}" onerror="this.src='images/default.jpg'">
+                        <div class="product-info">
+                            <h4>${item.title}</h4>
+                            <p><strong>Author:</strong> ${item.author}</p>
+                            <p><strong>Price:</strong> $${item.price}</p>
+                            <p><strong>Quality:</strong> ${item.quality}</p>
+                            <p class="description">${item.description}</p>
+                        </div>
+  </div>
+                `;
+            });
+            productsGrid.innerHTML = html;
+        }
+
+        function setupProfileImage() {
+            const profileImage = document.getElementById('profileImage');
+            const defaultIcon = document.getElementById('defaultProfileIcon');
+            const imageInput = document.getElementById('profileImageInput');
+            
+            // Load saved profile image
+            const savedImage = localStorage.getItem('profileImage');
+            if (savedImage) {
+                profileImage.src = savedImage;
+                profileImage.style.display = 'block';
+                defaultIcon.style.display = 'none';
+            }
+
+            // Handle file upload
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profileImage.src = e.target.result;
+                        profileImage.style.display = 'block';
+                        defaultIcon.style.display = 'none';
+                        localStorage.setItem('profileImage', e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function setupModalImage() {
+            const modalProfileImage = document.getElementById('modalProfileImage');
+            const modalDefaultIcon = document.getElementById('modalDefaultIcon');
+            const modalImageInput = document.getElementById('modalImageInput');
+            
+            // Load current profile image into modal
+            const savedImage = localStorage.getItem('profileImage');
+            if (savedImage) {
+                modalProfileImage.src = savedImage;
+                modalProfileImage.style.display = 'block';
+                modalDefaultIcon.style.display = 'none';
+            } else {
+                modalProfileImage.style.display = 'none';
+                modalDefaultIcon.style.display = 'flex';
+            }
+
+            // Handle modal file upload
+            modalImageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Update modal image
+                        modalProfileImage.src = e.target.result;
+                        modalProfileImage.style.display = 'block';
+                        modalDefaultIcon.style.display = 'none';
+                        
+                        // Update main profile image
+                        const mainProfileImage = document.getElementById('profileImage');
+                        const mainDefaultIcon = document.getElementById('defaultProfileIcon');
+                        mainProfileImage.src = e.target.result;
+                        mainProfileImage.style.display = 'block';
+                        mainDefaultIcon.style.display = 'none';
+                        
+                        // Save to localStorage
+                        localStorage.setItem('profileImage', e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function openEditProfile() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            // Populate form with current data
+            document.getElementById('editName').value = user.name || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editAddress').value = user.address || '';
+            document.getElementById('editBio').value = user.description || '';
+            
+            // Setup modal image
+            setupModalImage();
+            
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // Handle form submission
+        document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                phone: document.getElementById('editPhone').value,
+                address: document.getElementById('editAddress').value,
+                description: document.getElementById('editBio').value
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('currentUser', JSON.stringify(formData));
+            
+            // Update display
+            loadUserProfile();
+            
+            // Close modal
+            closeEditModal();
+            
+            alert('Profile updated successfully!');
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+
+        function logout() {
+            // Clear all user session data
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('profileImage');
+            localStorage.removeItem('userProfile');
+            localStorage.removeItem('userData');
+            
+            // Clear cart and shopping data
+            localStorage.removeItem('cart');
+            localStorage.removeItem('wishlist');
+            localStorage.removeItem('favorites');
+            localStorage.removeItem('recentOrders');
+            localStorage.removeItem('orderHistory');
+            
+            // Clear any form data or temporary data
+            localStorage.removeItem('tempFormData');
+            localStorage.removeItem('searchHistory');
+            localStorage.removeItem('viewedProducts');
+            
+            // Clear any authentication tokens
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('sessionToken');
+            localStorage.removeItem('loginStatus');
+            
+            // Clear any user preferences
+            localStorage.removeItem('userPreferences');
+            localStorage.removeItem('theme');
+            localStorage.removeItem('language');
+            
+            // Clear any cached data
+            sessionStorage.clear();
+            
+            // Show logout message
+            alert('You have been logged out successfully! All data has been cleared.');
+            
+            // Redirect to homepage
+            window.location.href = 'OtakuHavenProto.html';
+        }
+    </script>
+</body>
+
+</html>

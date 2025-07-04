@@ -1,18 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 body, html {
     position: relative;
     margin: 0;
     padding: 0;
     height: 1200px;
     overflow-y: visible;
-    font-family: Papyrus, Arial, sans-serif;
+    font-family: 'Indie Flower', cursive;
     text-align: center;
     color: white;
-  }
+    text-transform: uppercase;
+    font-weight: bold;
+}
 
-  
-  .top {
+.top {
     display: flex; 
-    align-items: center; /* Center vertically */
+    align-items: center;
     justify-content: center;
     position: relative;
     top: 0;
@@ -21,21 +26,22 @@ body, html {
     height: 279px; 
     background-image: 
         linear-gradient(rgba(255, 218, 185, 0.4), rgba(255, 218, 185, 0.4)), 
-        url('for fyp top bg.jpg'),
-        url('anoptherboku UwU.png'); 
+        url('images/for fyp top bg.jpg'),
+        url('images/anoptherboku UwU.png'); 
     background-size: cover;
     background-position: center; 
     overflow: hidden; 
     text-align: center;
     color: white; 
-    font-family: Papyrus, Arial, sans-serif; 
+    font-family: 'Indie Flower', cursive; 
     font-size: 50px;
     z-index: 1;
+    font-weight: bold;
 }
 
 .search-container {
     position: absolute;
-    bottom: 15px; /* Moved closer to the bottom */
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
@@ -45,12 +51,12 @@ body, html {
 
 .search-bar {
     width: 100%; 
-    max-width: 500px; /* Decreased max-width */
+    max-width: 500px;
     background: rgba(255, 0, 0, 0.2);
     display: flex;
     align-items: center;
-    border-radius: 30px; /* Reduced border-radius for smaller appearance */
-    padding: 5px 10px; /* Reduced padding */
+    border-radius: 30px;
+    padding: 5px 10px;
     backdrop-filter: blur(4px) saturate(180%);
 }
 
@@ -59,8 +65,8 @@ body, html {
     flex: 1; 
     border: 0; 
     outline: none; 
-    padding: 5px; /* Reduced padding */
-    font-size: 16px; /* Reduced font size */
+    padding: 5px;
+    font-size: 16px;
     color: #ffffff; 
 }
 
@@ -71,13 +77,12 @@ body, html {
   outline: none;
 }
 
-
 ::placeholder {
     color: rgb(106, 22, 22);
 }
 
 .search-bar button img {
-    width: 40px; /* Reduced icon size */
+    width: 40px;
     object-fit:contain;
     margin-left: -5px;
     margin-top: -2px;
@@ -86,8 +91,8 @@ body, html {
 .search-bar button {
     border: 0;
     border-radius: 50%;
-    width: 40px; /* Reduced button width */
-    height: 40px; /* Reduced button height */
+    width: 40px;
+    height: 40px;
     background: transparent;
     cursor: pointer;
 }
@@ -99,457 +104,1024 @@ body, html {
   outline: none;
 }
 
-
 .center{
     position: absolute; 
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the text */
+    transform: translate(-50%, -50%);
     text-align: center;
     color: white; 
-    font-family: Papyrus; 
+    font-family: 'Indie Flower', cursive; 
     font-size: 50px;
     display: flex; 
-    align-items: center; /* Center vertically within the flex container */
+    align-items: center;
     justify-content: center;
+    text-transform: none !important;
+    font-weight: bold;
 }
 
 .center::before,
 .center::after {
-    content: ""; /* Required for pseudo-elements */
+    content: "";
     display: block;
-    height: 4px; /* Width of the vertical bars */
-    width: 5000px; /* Height of the vertical bars */
-    background-color: white; /* Color of the bars */
-    margin: 0 20px; /* Space between the bars and the text */
+    height: 4px;
+    width: 5000px;
+    background-color: white;
+    margin: 0 20px;
 }
 
 .profile-icon-container {
-    position: absolute; /* Positions the container absolutely within its nearest positioned ancestor */
-    top: 210px; /* Positions the container 20 pixels from the top of its containing element */
-    right: 20px; /* Positions the container 20 pixels from the right of its containing element */
-    z-index: 2; /* Sets the stacking order of the container, ensuring it appears above other elements with lower z-index values */
+    position: absolute;
+    top: 210px;
+    right: 20px;
+    z-index: 2;
 }
 
 .icon {
-    width: 55px; /* Sets the width of the icon to 44 pixels */
-    height: 55px; /* Sets the height of the icon to 44 pixels */
-    border-radius: 50%; /* Makes the icon circular by setting the border radius to 50% */
-    overflow: hidden; /* Hides any content that overflows the bounds of the icon */
-    cursor: pointer; /* Changes the cursor to a pointer when hovering over the icon, indicating it's clickable */
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow around the icon for depth */
-    transition: box-shadow 0.3s ease, transform 0.2s ease; /* Smoothly transitions the box-shadow and transform properties on hover */
-    background-color: rgb(0, 0, 0); /* Sets the background color of the icon to black */
-    display: flex; /* Uses flexbox layout for the icon's content */
-    justify-content: center; /* Centers the content horizontally within the icon */
-    align-items: center; /* Centers the content vertically within the icon */
-  }
-  .icon:hover,
-  .icon:focus {
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7); /* Increases the shadow on hover or focus for emphasis */
-    transform: scale(1.05); /* Slightly enlarges the icon on hover or focus for a visual effect */
-    outline: none; /* Removes the default outline that appears on focus */
-  }
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Indie Flower', cursive;
+    font-weight: bold;
+}
 
-  /* Profile image inside the icon */
-  .icon img {
-   width: 100px; /* Sets the image width to fill the icon */
-    height: 100%; /* Sets the image height to fill the icon */
-    display: block; /* Prevents any extra space below the image (common with inline elements) */
-  }
-  /* Mobile friendly tap area */
-  @media (max-width: 600px) {
+.icon:hover,
+.icon:focus {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+    outline: none;
+}
+
+.icon img {
+   width: 100px;
+    height: 100%;
+    display: block;
+}
+
+@media (max-width: 600px) {
     .icon {
       width: 40px;
       height: 40px;
     }
-  }
+}
 
-
-/* shopping cart */
 .shop-container {
-    position: absolute; /* Positions the container absolutely within its nearest positioned ancestor */
-    top: 210px; /* Positions the container 20 pixels from the top of its containing element */
-    right: 100px; /* Positions the container 20 pixels from the right of its containing element */
-    z-index: 2; /* Sets the stacking order of the container, ensuring it appears above other elements with lower z-index values */
+    position: absolute;
+    top: 210px;
+    right: 100px;
+    z-index: 2;
 }
 
 .shopping {
-    width: 55px; /* Sets the width of the icon to 44 pixels */
-    height: 55px; /* Sets the height of the icon to 44 pixels */
-    border-radius: 50%; /* Makes the icon circular by setting the border radius to 50% */
-    overflow: hidden; /* Hides any content that overflows the bounds of the icon */
-    cursor: pointer; /* Changes the cursor to a pointer when hovering over the icon, indicating it's clickable */
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow around the icon for depth */
-    transition: box-shadow 0.3s ease, transform 0.2s ease; /* Smoothly transitions the box-shadow and transform properties on hover */
-    background-color: rgb(0, 0, 0); /* Sets the background color of the icon to black */
-    display: flex; /* Uses flexbox layout for the icon's content */
-    justify-content: center; /* Centers the content horizontally within the icon */
-    align-items: center; /* Centers the content vertically within the icon */
-  }
-  .shopping:hover,
-  .shopping:focus {
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7); /* Increases the shadow on hover or focus for emphasis */
-    transform: scale(1.05); /* Slightly enlarges the icon on hover or focus for a visual effect */
-    outline: none; /* Removes the default outline that appears on focus */
-  }
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Indie Flower', cursive;
+    font-weight: bold;
+}
 
-  /* Profile image inside the icon */
-  .shopping img {
-   width: 35px; /* Sets the image width to fill the icon */
-    height: 35px; /* Sets the image height to fill the icon */
-    display: block; /* Prevents any extra space below the image (common with inline elements) */
-  }
+.shopping:hover,
+.shopping:focus {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+    outline: none;
+}
 
-  /*favourite*/
-  .favourite-container {
-    position: absolute; /* Positions the container absolutely within its nearest positioned ancestor */
-    top: 210px; /* Positions the container 20 pixels from the top of its containing element */
-    right: 185px; /* Positions the container 20 pixels from the right of its containing element */
-    z-index: 2; /* Sets the stacking order of the container, ensuring it appears above other elements with lower z-index values */
+.shopping img {
+   width: 35px;
+    height: 35px;
+    display: block;
+}
+
+.favourite-container {
+    position: absolute;
+    top: 210px;
+    right: 185px;
+    z-index: 2;
 }
 
 .fav {
-    width: 55px; /* Sets the width of the icon to 44 pixels */
-    height: 55px; /* Sets the height of the icon to 44 pixels */
-    border-radius: 50%; /* Makes the icon circular by setting the border radius to 50% */
-    overflow: hidden; /* Hides any content that overflows the bounds of the icon */
-    cursor: pointer; /* Changes the cursor to a pointer when hovering over the icon, indicating it's clickable */
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow around the icon for depth */
-    transition: box-shadow 0.3s ease, transform 0.2s ease; /* Smoothly transitions the box-shadow and transform properties on hover */
-    background-color: rgb(0, 0, 0); /* Sets the background color of the icon to black */
-    display: flex; /* Uses flexbox layout for the icon's content */
-    justify-content: center; /* Centers the content horizontally within the icon */
-    align-items: center; /* Centers the content vertically within the icon */
-  }
-  .fav:hover,
-  .fav:focus {
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7); /* Increases the shadow on hover or focus for emphasis */
-    transform: scale(1.05); /* Slightly enlarges the icon on hover or focus for a visual effect */
-    outline: none; /* Removes the default outline that appears on focus */
-  }
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 30px;
+    font-family: 'Indie Flower', cursive;
+    font-weight: bold;
+    text-align: left;
+}
 
-  /* Profile image inside the icon */
-  .fav img {
-   width: 40px; /* Sets the image width to fill the icon */
-    height: 40px; /* Sets the image height to fill the icon */
-    display: block; /* Prevents any extra space below the image (common with inline elements) */
-  }
+.fav:hover,
+.fav:focus {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+    outline: none;
+}
+
+.fav img {
+   width: 35px;
+    height: 35px;
+    display: block;
+}
 
 .rect img{
-position: absolute;
-top: 209px;
-right: 0px;
-left: 1272px; 
-width: 220px;
-height: 58px; 
-opacity: 0.7;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
-.pblish{
-  position: absolute;
-      display: inline-flex;
-  left: 20px; 
-  background-color: #7a3d26; /* Blue background color */
-  color: #ffffff; /* White text color */
-  padding: 10px 20px; /* Adjust padding for size */
-  border: 2px solid #7a3d26; /* Blue border */
-  height: 53px;
-  width: 200px;
-  border-radius: 50px; /* Border radius property to add rounded corners */
-  cursor: pointer; /* Changes cursor to pointer when button is hovered */
-      z-index: 2;
-      top: 210px; 
-  font-size: 30px;
-  font-family:  Papyrus, Arial, sans-serif;
-  font-weight: bold;
-  text-align: left;
-  gap: 8px; 
-  align-items: center;
+.Publish {
+    position: absolute;
+    top: 210px;
+    right: 270px;
+    z-index: 2;
 }
-  
-.pblish img{
-  display: flex;
-    display: inline-block;
-    vertical-align: middle;
+
+.pblish-link {
+    text-decoration: none;
+}
+
+.pblish {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Indie Flower', cursive;
+    font-weight: bold;
+}
+
+.pblish img {
+   width: 35px;
+    height: 35px;
+    display: block;
+}
+
+.pblish:hover, .pblish:focus {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+    transform: scale(1.05);
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    .your-element {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (min-width: 601px) {
+    .your-element {
+        width: 55px;
+        height: 55px;
+    }
+}
+
+.tape{
+    position: relative;
+}
+
+.tape .tapetext {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
+
+.tape img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.products-container {
+    margin: 20px auto;
+    max-width: 1200px;
+    position: relative;
+    padding: 0 60px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.product-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.product-grid::before,
+.product-grid::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    z-index: 1;
+}
+
+.product-item {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
     width: 50px;
     height: 50px;
-    justify-content: flex-start;
-    margin-left: 5px; 
-  }
-
-.pblish:hover,.pblish:focus{
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7); /* Increases the shadow on hover or focus for emphasis */
-    transform: scale(1.05); /* Slightly enlarges the icon on hover or focus for a visual effect */
-    outline: none; /* Removes the default outline that appears on focus */
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
 }
 
-
-   @media (max-width: 600px) {
-       .your-element {
-           background-image: url("shelf.png");
-       }
-   }
-   @media (min-width: 601px) {
-       .your-element {
-           background-image: url("shelf.png");
-       }
-   }
-
-
-   .tape{
-    position: relative;
-   }
-
-     .tape .tapetext {
-    position: absolute;
-    top: 40px;
-    left: 625px;
-    color: #ffffff;
-    font-size: 40px;
-    font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    pointer-events: none; /* So text doesn't block image interactions */
-  }
-
-   .tape img {
-       position: absolute;
-       top: -20px;
-       left: 525px; 
-       z-index: 10; /* Adjust this value as needed */
-       height: 160px;
-   }
-
-/* Reset any potential conflicts */
-.goods-scroll {
-  display: flex;
-  animation: scroll-left 12s linear infinite;
-  will-change: transform;
-  position: relative;
-  z-index: 10;
-  /* Force spacing to work: */
-  align-items: flex-start; /* Prevents strange stretching */
-  flex-wrap: nowrap; /* Ensures single line */
+.nav-button.left {
+    left: 10px;
 }
 
-/* Base image styles */
-.goods-scroll img {
-  height: 300px;
-  width: auto;
-  border-radius: 12px;
-  box-shadow: 0 8px 15px rgba(0,0,0,0.7);
-  user-select: none;
-  display: block;
-  flex-shrink: 0; /* CRITICAL - prevents shrinking */
+.nav-button.right {
+    right: 10px;
 }
 
-/* Individual spacing */
-
-
-
-.scroll-image1 {
-  transform: translateX(-90px) ;
-}
-.scroll-image2 {
-  transform: translateX(510px) ;
-}
-.scroll-image3{
-  transform: translateX(-530px) ;
+.nav-button:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
 }
 
-
-
-.scroll-image1 { margin-right: 50px; }
-.scroll-image2 { margin-right: 100px; }
-.scroll-image3 { margin-right: 30px; }
-
-/*@keyframes scroll-left {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+@media (max-width: 768px) {
+    .products-container {
+        padding: 0 40px;
+    }
+    
+    .nav-button {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .nav-button.left {
+        left: 5px;
+    }
+    
+    .nav-button.right {
+        right: 5px;
+    }
+    
+    .product-item {
+        min-width: 150px;
+    }
+    
+    .product-title-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        color: white;
+        padding: 20px 10px 10px;
+        font-size: 14px;
+        font-weight: bold;
+    }
 }
 
-
-   /*next*/
-      .tape1{
+.tape1{
     position: relative;
-   }
+}
 
-     .tape1 .tapetext1 {
+.tape1 .tapetext1 {
     position: absolute;
-    top: 680px;
-    left: 680px;
-    color: #ffffff;
-    font-size: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    pointer-events: none; /* So text doesn't block image interactions */
-  }
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
 
-   .tape1 img {
-       position: absolute;
-       top: 620px;
-       left: 525px; 
-       z-index: 10; /* Adjust this value as needed */
-       height: 160px;
-   }
+.tape1 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
 
-      /*next*/
-         .tape2{
+.products-container.manga {
+    margin: 20px auto;
+    max-width: 1200px;
     position: relative;
-   }
+    padding: 0 60px;
+}
 
-     .tape2 .tapetext2 {
+.manga-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.manga-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.manga-left, 
+.manga-right {
     position: absolute;
-    top: 1300px;
-    left: 680px;
-    color: #ffffff;
-    font-size: 40px;
-    font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    pointer-events: none; /* So text doesn't block image interactions */
-  }
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
 
-   .tape2 img {
-       position: absolute;
-       top: 1240px;
-       left: 525px; 
-       z-index: 10; /* Adjust this value as needed */
-       height: 160px;
-   }
-   
-   /*next*/
+.manga-left {
+    left: 10px;
+}
 
-            .tape3{
+.manga-right {
+    right: 10px;
+}
+
+.manga-left:hover,
+.manga-right:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .products-container.manga {
+        padding: 0 40px;
+    }
+    
+    .manga-left, 
+    .manga-right {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .manga-left {
+        left: 5px;
+    }
+    
+    .manga-right {
+        right: 5px;
+    }
+}
+
+.tape2{
     position: relative;
-   }
+}
 
-     .tape3 .tapetext3 {
+.tape2 .tapetext2 {
     position: absolute;
-    top: 1900px;
-    left: 680px;
-    color: #ffffff;
-    font-size: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    pointer-events: none; /* So text doesn't block image interactions */
-  }
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
 
-   .tape3 img {
-       position: absolute;
-       top: 1850px;
-       left: 525px; 
-       z-index: 10; /* Adjust this value as needed */
-       height: 160px;
-   }
+.tape2 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
 
-   /*next*/
-
-               .tape4{
+.products-container.manhwa {
+    margin: 20px auto;
+    max-width: 1200px;
     position: relative;
-   }
+    padding: 0 60px;
+}
 
-     .tape4 .tapetext4 {
+.manhwa-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.manhwa-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.manhwa-left, 
+.manhwa-right {
     position: absolute;
-    top: 2510px;
-    left: 680px;
-    color: #ffffff;
-    font-size: 40px;
-    font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    pointer-events: none; /* So text doesn't block image interactions */
-  }
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
 
-   .tape4 img {
-       position: absolute;
-       top: 2460px;
-       left: 525px; 
-       z-index: 10; /* Adjust this value as needed */
-       height: 160px;
-   }
+.manhwa-left {
+    left: 10px;
+}
 
-   /*next*/
+.manhwa-right {
+    right: 10px;
+}
 
-                  .tape5{
+.manhwa-left:hover,
+.manhwa-right:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .products-container.manhwa {
+        padding: 0 40px;
+    }
+    
+    .manhwa-left, 
+    .manhwa-right {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .manhwa-left {
+        left: 5px;
+    }
+    
+    .manhwa-right {
+        right: 5px;
+    }
+    
+    .manhwa-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+.tape3{
     position: relative;
-   }
+}
 
-     .tape5 .tapetext5 {
+.tape3 .tapetext3 {
     position: absolute;
-    top: 3120px;
-    left: 680px;
-    color: #ffffff;
-    font-size: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    pointer-events: none; /* So text doesn't block image interactions */
-  }
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
 
-   .tape5 img {
-       position: absolute;
-       top: 3060px;
-       left: 525px; 
-       z-index: 10; /* Adjust this value as needed */
-       height: 160px;
-   }
+.tape3 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
 
-   /*next*/
-
-                     .tape6{
+.products-container.manhua {
+    margin: 20px auto;
+    max-width: 1200px;
     position: relative;
-   }
+    padding: 0 60px;
+}
 
-     .tape6 .tapetext6 {
+.product-grid.manhua-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.product-grid.manhua-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-button.manhua-left, 
+.nav-button.manhua-right {
     position: absolute;
-    top: 3730px;
-    left: 640px;
-    color: #ffffff;
-    font-size: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.nav-button.manhua-left {
+    left: 10px;
+}
+
+.nav-button.manhua-right {
+    right: 10px;
+}
+
+.nav-button.manhua-left:hover,
+.nav-button.manhua-right:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .products-container.manhua {
+        padding: 0 40px;
+    }
+    
+    .nav-button.manhua-left, 
+    .nav-button.manhua-right {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .nav-button.manhua-left {
+        left: 5px;
+    }
+    
+    .nav-button.manhua-right {
+        right: 5px;
+    }
+    
+    .product-grid.manhua-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+.tape4{
+    position: relative;
+}
+
+.tape4 .tapetext4 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-    z-index: 10;
-    pointer-events: none; /* So text doesn't block image interactions */
-  }
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
 
-   .tape6 img {
-       position: absolute;
-       top: 3680px;
-       left: 525px; 
-       z-index: 10; /* Adjust this value as needed */
-       height: 160px;
-   }
+.tape4 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
 
+.products-container.comic {
+    margin: 20px auto;
+    max-width: 1200px;
+    position: relative;
+    padding: 0 60px;
+}
 
+.product-grid.comic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
 
+.product-grid.comic-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-button.comic-left, 
+.nav-button.comic-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.nav-button.comic-left {
+    left: 10px;
+}
+
+.nav-button.comic-right {
+    right: 10px;
+}
+
+.nav-button.comic-left:hover,
+.nav-button.comic-right:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .products-container.comic {
+        padding: 0 40px;
+    }
+    
+    .nav-button.comic-left, 
+    .nav-button.comic-right {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .nav-button.comic-left {
+        left: 5px;
+    }
+    
+    .nav-button.comic-right {
+        right: 5px;
+    }
+    
+    .product-grid.comic-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+.tape5{
+    position: relative;
+}
+
+.tape5 .tapetext5 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
+
+.tape5 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.products-container.novel {
+    margin: 20px auto;
+    max-width: 1200px;
+    position: relative;
+    padding: 0 60px;
+}
+
+.product-grid.novel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.product-grid.novel-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-button.novel-left, 
+.nav-button.novel-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.nav-button.novel-left {
+    left: 10px;
+}
+
+.nav-button.novel-right {
+    right: 10px;
+}
+
+.nav-button.novel-left:hover,
+.nav-button.novel-right:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .products-container.novel {
+        padding: 0 40px;
+    }
+    
+    .nav-button.novel-left, 
+    .nav-button.novel-right {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .nav-button.novel-left {
+        left: 5px;
+    }
+    
+    .nav-button.novel-right {
+        right: 5px;
+    }
+    
+    .product-grid.novel-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+.tape6{
+    position: relative;
+}
+
+.tape6 .tapetext6 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
+
+.tape6 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.products-container.stationery {
+    margin: 20px auto;
+    max-width: 1200px;
+    position: relative;
+    padding: 0 60px;
+}
+
+.product-grid.stationery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.product-grid.stationery-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-button.stationery-left, 
+.nav-button.stationery-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.nav-button.stationery-left {
+    left: 10px;
+}
+
+.nav-button.stationery-right {
+    right: 10px;
+}
+
+.nav-button.stationery-left:hover,
+.nav-button.stationery-right:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .products-container.stationery {
+        padding: 0 40px;
+    }
+    
+    .nav-button.stationery-left, 
+    .nav-button.stationery-right {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .nav-button.stationery-left {
+        left: 5px;
+    }
+    
+    .nav-button.stationery-right {
+        right: 5px;
+    }
+    
+    .product-grid.stationery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
 
 .classtest {
-    position: relative;
-    /* background-image: url("anoptherboku.jpg"); */
-    /* background-image: url("anoptherboku.jpg"); */
-    background-size: 100% 100%;  
-    width: 3500px;
-    height: 4500px;
-    /* background-position:top;  */
-    background-repeat: no-repeat;
-    z-index: 1;
-    /* margin: 0; */
-    /* Removed height: 100vh to allow scrolling */
-    
-    width: 99vw;
-    /* min-height: 100%;    display: block; remove flexbox to allow natural flow for scrolling */
-    /* If you want the content centered horizontally only, use text-align */
-    /* text-align: top; */
-    /* align-items: flex-end; */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-family: 'Indie Flower', cursive;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#categorySelect {
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    font-size: 16px;
+    background: white;
+    color: #333;
+}
+
+.pblish, .btn, .product-title, .product-info, .product-actions, .product-result, .product-grid, .product-list, .product-box, .cart-title, .cart-product-title, .cart-price, .cart-detail, .cart-quantity, .cart-remove, .cart-img, .cart-content, .cart-box, .cart, .total-title, .total-price, .wishlist-btn, .buy-btn, .sidebar-options a, .close-btn, .sidebar-options, .profile-sidebar, .sidebar-overlay, .search-bar input, .search-bar button, .search-bar, .search-container, .product-title, .product-item, .product-grid, .product-list, .product-box, .cart-title, .cart-product-title, .cart-price, .cart-detail, .cart-quantity, .cart-remove, .cart-img, .cart-content, .cart-box, .cart, .total-title, .total-price, .wishlist-btn, .buy-btn {
+    font-family: 'Indie Flower', cursive;
+}
+
+.btn-cancel-round {
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cancel-round:hover {
+    background: #ff3742;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 
-/*Error*/

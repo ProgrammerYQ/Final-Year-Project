@@ -1,106 +1,882 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<head>
-    <title>Prototype</title>
-    <link rel="stylesheet" href= "GG.css"> 
-</head> 
+    <title>Otaku Haven</title>
+    <link rel="stylesheet" href="GG.css">
+</head>
 <body>
-    <script src="otakuhaven.js"></script>
-
-    <div class = "top">
-    
-    <div class = "Publish">
-    <button class ="pblish">Publish <img src="add.png"></button>
-    </div>
-
-    <div class="rect">
-    <img src="Rect.png">
-    </div> 
-
+    <div class="top">
+        <div class="Publish">
+            <a href="publish.html" class="pblish-link">
+                <button class="pblish">Publish <img src="images/add.png"></button>
+            </a>
+        </div>
+        <div class="rect">
+            <img src="images/Rect.png">
+        </div>
         <div class="search-container">
-            <form action="" class="search-bar">
-                <input type="text" placeholder="search it up!"> 
-                <button type="submit"><img src="search icon.png" alt="Search"></button>
+            <form action="searchresultpage.html" method="GET" class="search-bar" id="searchForm">
+                <input type="text" name="query" placeholder="search it up!" id="searchInput" style="flex:1;">
+                <select name="category" id="categorySelect" style="height:36px; min-width:90px; max-width:120px; margin-left:8px; padding:0 10px; border-radius:18px; border:1px solid #e0bfae; background:#fff8f3; color:#6a1616; font-family:'Indie Flower', cursive; font-size:15px; outline:none; box-shadow:0 1px 4px rgba(255,218,185,0.15);">
+                    <option value="all">All</option>
+                    <option value="manga">Manga</option>
+                    <option value="manhwa">Manhwa</option>
+                    <option value="manhua">Manhua</option>
+                    <option value="comic">Comic</option>
+                    <option value="novel">Novel</option>
+                    <option value="stationary">Stationary</option>
+                </select>
+                <button type="submit"><img src="images/search icon.png" alt="Search"></button>
             </form>
         </div>
-
-
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class = "center">Otaku Haven</div>
+        <div class="center">Otaku Haven</div>
     </div>
 
-        <div class="profile-icon-container">
-        <button class="icon">
-        <img src="account_circle.png">
+    <div class="profile-icon-container">
+        <button class="icon" id="profileIconBtn">
+            <img src="images/account_circle.png" alt="Profile">
+        </button>
+    </div>
+    <div class="shop-container">
+        <button class="shopping" onclick="window.location.href='Add to cart.html'" style="position:relative;">
+            <img src="images/Shopping cart.png" alt="Shopping Cart">
+            <span id="cart-badge" style="position:absolute;top:0;right:0;background:#ff4444;color:white;border-radius:50%;padding:2px 7px;font-size:0.9em;display:none;">0</span>
+        </button>
+    </div>
+    <div class="favourite-container">
+        <button class="fav" onclick="window.location.href='wishlist.html'" style="position:relative;">
+            <img src="images/favorite.png" alt="Favorites">
         </button>
     </div>
 
-
-        <div class="shop-container">
-        <button class="shopping">
-        <img src="Shopping cart.png">
-        </button>  
-    </div>
-
-            <div class="favourite-container">
-        <button class="fav">
-        <img src="favorite.png">
-        </button>  
-    </div>
-
-        <div class="tape">
-    <img src="a tyape pls work 1.png">
+    <div class="tape">
+        <img src="images/a tyape pls work 1.png" alt="Tape">
         <div class="tapetext">Goods for you</div>
-
-<div class="goods-scroll" aria-label="Scrolling goods images">
-  <img class="scroll-image1" src="Japanese manga/10-best-one-piece-manga-panels.avif" alt="Poster 1" />
-  <img class="scroll-image2" src="Japanese manga/cool-poster-art-for-chainsaw-man.jpg" alt="Poster 2" />
-  <img class="scroll-image3" src="Japanese manga/71xQCzfzYLL._AC_UF894,1000_QL80_.jpg" alt="Poster 3" />
-  <!-- Duplicate for smooth scrolling -->
-  <img class="scroll-image1" src="Japanese manga/10-best-one-piece-manga-panels.avif" alt="Poster 1" />
-  <img class="scroll-image2" src="Japanese manga/cool-poster-art-for-chainsaw-man.jpg" alt="Poster 2" />
-  <img class="scroll-image3" src="Japanese manga/71xQCzfzYLL._AC_UF894,1000_QL80_.jpg" alt="Poster 3" />
-</div>
+    </div>
+    <div class="products-container">
+        <button class="nav-button left"><</button>
+        <div class="product-grid">
+            <a href="productui.html?image=Japanese%20manga/10-best-one-piece-manga-panels.avif" class="product-item">
+                <img src="Japanese manga/10-best-one-piece-manga-panels.avif" alt="One Piece Manga Panel Collection">
+                <div class="product-title-overlay">One Piece Manga Panel Collection</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/71jqm3aQqpL._AC_SL1500_.jpg" class="product-item">
+                <img src="Japanese manga/71jqm3aQqpL._AC_SL1500_.jpg" alt="Romance Manga Collection">
+                <div class="product-title-overlay">Romance Manga Collection</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/71xQCzfzYLL._AC_UF894,1000_QL80_.jpg" class="product-item">
+                <img src="Japanese manga/71xQCzfzYLL._AC_UF894,1000_QL80_.jpg" alt="Initial D Complete Series">
+                <div class="product-title-overlay">Initial D Complete Series</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/Jujutsu_kaisen.jpg" class="product-item">
+                <img src="Japanese manga/Jujutsu_kaisen.jpg" alt="Jujutsu Kaisen Volume Set">
+                <div class="product-title-overlay">Jujutsu Kaisen Volume Set</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/cool-poster-art-for-chainsaw-man-created-by-vincent-aseo.jpg" class="product-item">
+                <img src="Japanese manga/cool-poster-art-for-chainsaw-man-created-by-vincent-aseo.jpg" alt="Chainsaw Man Poster Art">
+                <div class="product-title-overlay">Chainsaw Man Poster Art</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/filters_quality(95)format(webp).webp" class="product-item">
+                <img src="Japanese manga/filters_quality(95)format(webp).webp" alt="Durarara!! Light Novel Set">
+                <div class="product-title-overlay">Durarara!! Light Novel Set</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/haikyu.jpg" class="product-item">
+                <img src="Japanese manga/haikyu.jpg" alt="Haikyuu!! Volleyball Manga">
+                <div class="product-title-overlay">Haikyuu!! Volleyball Manga</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/slamdunk.jpg" class="product-item">
+                <img src="Japanese manga/slamdunk.jpg" alt="Slam Dunk Basketball Manga">
+                <div class="product-title-overlay">Slam Dunk Basketball Manga</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/fate.jpg" class="product-item">
+                <img src="Japanese manga/fate.jpg" alt="Fate Series Manga">
+                <div class="product-title-overlay">Fate Series Manga</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/demonslayer.jpg" class="product-item">
+                <img src="Japanese manga/demonslayer.jpg" alt="Demon Slayer Manga">
+                <div class="product-title-overlay">Demon Slayer Manga</div>
+            </a>
+        </div>
+        <button class="nav-button right">></button>
     </div>
 
-        <div class="tape1">
-    <img src="a tyape pls work 1.png">
+    <div class="tape1">
+        <img src="images/a tyape pls work 1.png" alt="Tape">
         <div class="tapetext1">Manga</div>
     </div>
+    <div class="products-container manga">
+        <button class="nav-button left manga-left"><</button>
+        <div class="product-grid manga-grid">
+            <a href="productui.html?image=Japanese%20manga/71jqm3aQqpL._AC_SL1500_.jpg" class="product-item">
+                <img src="Japanese manga/71jqm3aQqpL._AC_SL1500_.jpg" alt="Romance Manga Collection">
+                <div class="product-title-overlay">Romance Manga Collection</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/Jujutsu_kaisen.jpg" class="product-item">
+                <img src="Japanese manga/Jujutsu_kaisen.jpg" alt="Jujutsu Kaisen Volume Set">
+                <div class="product-title-overlay">Jujutsu Kaisen Volume Set</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/10-best-one-piece-manga-panels.avif" class="product-item">
+                <img src="Japanese manga/10-best-one-piece-manga-panels.avif" alt="One Piece Manga Panel Collection">
+                <div class="product-title-overlay">One Piece Manga Panel Collection</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/cool-poster-art-for-chainsaw-man-created-by-vincent-aseo.jpg" class="product-item">
+                <img src="Japanese manga/cool-poster-art-for-chainsaw-man-created-by-vincent-aseo.jpg" alt="Chainsaw Man Poster Art">
+                <div class="product-title-overlay">Chainsaw Man Poster Art</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/filters_quality(95)format(webp).webp" class="product-item">
+                <img src="Japanese manga/filters_quality(95)format(webp).webp" alt="Durarara!! Light Novel Set">
+                <div class="product-title-overlay">Durarara!! Light Novel Set</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/71xQCzfzYLL._AC_UF894,1000_QL80_.jpg" class="product-item">
+                <img src="Japanese manga/71xQCzfzYLL._AC_UF894,1000_QL80_.jpg" alt="Initial D Complete Series">
+                <div class="product-title-overlay">Initial D Complete Series</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/haikyu.jpg" class="product-item">
+                <img src="Japanese manga/haikyu.jpg" alt="Haikyuu!! Volleyball Manga">
+                <div class="product-title-overlay">Haikyuu!! Volleyball Manga</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/slamdunk.jpg" class="product-item">
+                <img src="Japanese manga/slamdunk.jpg" alt="Slam Dunk Basketball Manga">
+                <div class="product-title-overlay">Slam Dunk Basketball Manga</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/fate.jpg" class="product-item">
+                <img src="Japanese manga/fate.jpg" alt="Fate Series Manga">
+                <div class="product-title-overlay">Fate Series Manga</div>
+            </a>
+            <a href="productui.html?image=Japanese%20manga/demonslayer.jpg" class="product-item">
+                <img src="Japanese manga/demonslayer.jpg" alt="Demon Slayer Manga">
+                <div class="product-title-overlay">Demon Slayer Manga</div>
+            </a>
+        </div>
+        <button class="nav-button right manga-right">></button>
+    </div>
 
-            <div class="tape2">
-    <img src="a tyape pls work 1.png">
+    <div class="tape2">
+        <img src="images/a tyape pls work 1.png" alt="Tape">
         <div class="tapetext2">Manhwa</div>
     </div>
+    <div class="products-container manhwa">
+        <button class="nav-button left manhwa-left"><</button>
+        <div class="product-grid manhwa-grid">
+            <a href="productui.html?image=Korean%20comics/business%20proposal.jpg" class="product-item">
+                <img src="Korean comics/business proposal.jpg" alt="Business Proposal">
+                <div class="product-title-overlay">Business Proposal</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/Itaewon%20Class.jpeg" class="product-item">
+                <img src="Korean comics/Itaewon Class.jpeg" alt="Itaewon Class">
+                <div class="product-title-overlay">Itaewon Class</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/Navillera.jpg" class="product-item">
+                <img src="Korean comics/Navillera.jpg" alt="Navillera">
+                <div class="product-title-overlay">Navillera</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/Our%20Beloved%20Summer.jpg" class="product-item">
+                <img src="Korean comics/Our Beloved Summer.jpg" alt="Our Beloved Summer">
+                <div class="product-title-overlay">Our Beloved Summer</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/Romance%20101.webp" class="product-item">
+                <img src="Korean comics/Romance 101.webp" alt="Romance 101">
+                <div class="product-title-overlay">Romance 101</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/sweet%20home.webp" class="product-item">
+                <img src="Korean comics/sweet home.webp" alt="Sweet Home">
+                <div class="product-title-overlay">Sweet Home</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/True%20Beauty.webp" class="product-item">
+                <img src="Korean comics/True Beauty.webp" alt="True Beauty">
+                <div class="product-title-overlay">True Beauty</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/omniscient%20reader.jpg" class="product-item">
+                <img src="Korean comics/omniscient reader.jpg" alt="Omniscient Reader">
+                <div class="product-title-overlay">Omniscient Reader</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/Lookism.jpg" class="product-item">
+                <img src="Korean comics/Lookism.jpg" alt="Lookism">
+                <div class="product-title-overlay">Lookism</div>
+            </a>
+            <a href="productui.html?image=Korean%20comics/Solo_Leveling.webp" class="product-item">
+                <img src="Korean comics/Solo_Leveling.webp" alt="Solo Leveling">
+                <div class="product-title-overlay">Solo Leveling</div>
+            </a>
+        </div>
+        <button class="nav-button right manhwa-right">></button>
+    </div>
 
-                <div class="tape3">
-    <img src="a tyape pls work 1.png">
+    <div class="tape3">
+        <img src="images/a tyape pls work 1.png" alt="Tape">
         <div class="tapetext3">Manhua</div>
     </div>
+    <div class="products-container manhua">
+        <button class="nav-button left manhua-left"><</button>
+        <div class="product-grid manhua-grid">
+            <a href="productui.html?image=chinese%20comics/5-A-256255-1030x842.png" class="product-item">
+                <img src="chinese comics/5-A-256255-1030x842.png" alt="Family">
+                <div class="product-title-overlay">Family</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/default.jpg" class="product-item">
+                <img src="chinese comics/default.jpg" alt="War">
+                <div class="product-title-overlay">War</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/images%20(1).jpeg" class="product-item">
+                <img src="chinese comics/images (1).jpeg" alt="Mountain">
+                <div class="product-title-overlay">Mountain</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/images%20(2).jpeg" class="product-item">
+                <img src="chinese comics/images (2).jpeg" alt="Politics">
+                <div class="product-title-overlay">Politics</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/images%20(3).jpeg" class="product-item">
+                <img src="chinese comics/images (3).jpeg" alt="Farm">
+                <div class="product-title-overlay">Farm</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/images%20(4).jpeg" class="product-item">
+                <img src="chinese comics/images (4).jpeg" alt="Restaurant">
+                <div class="product-title-overlay">Restaurant</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/images.jpeg" class="product-item">
+                <img src="chinese comics/images.jpeg" alt="Fight">
+                <div class="product-title-overlay">Fight</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/heaven%20list.jpg" class="product-item">
+                <img src="chinese comics/heaven list.jpg" alt="Heaven List">
+                <div class="product-title-overlay">Heaven List</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/Link_Click.webp" class="product-item">
+                <img src="chinese comics/Link_Click.webp" alt="Link Click">
+                <div class="product-title-overlay">Link Click</div>
+            </a>
+            <a href="productui.html?image=chinese%20comics/Magic%20emperor.jpeg" class="product-item">
+                <img src="chinese comics/Magic emperor.jpeg" alt="Magic Emperor">
+                <div class="product-title-overlay">Magic Emperor</div>
+            </a>
+        </div>
+        <button class="nav-button right manhua-right">></button>
+    </div>
 
-                <div class="tape4">
-    <img src="a tyape pls work 1.png">
+    <div class="tape4">
+        <img src="images/a tyape pls work 1.png" alt="Tape">
         <div class="tapetext4">Comics</div>
     </div>
+    <div class="products-container comic">
+        <button class="nav-button left comic-left"><</button>
+        <div class="product-grid comic-grid">
+            <a href="productui.html?image=western%20comics/65834.webp" class="product-item">
+                <img src="western comics/65834.webp" alt="The Lost World">
+                <div class="product-title-overlay">The Lost World</div>
+            </a>
+            <a href="productui.html?image=western%20comics/70180.webp" class="product-item">
+                <img src="western comics/70180.webp" alt="Ghost Rider">
+                <div class="product-title-overlay">Ghost Rider</div>
+            </a>
+            <a href="productui.html?image=western%20comics/download%20(1).jpeg" class="product-item">
+                <img src="western comics/download (1).jpeg" alt="Spiderman">
+                <div class="product-title-overlay">Spiderman</div>
+            </a>
+            <a href="productui.html?image=western%20comics/f8b036072120e8f350b5f7737391157d_original.avif" class="product-item">
+                <img src="western comics/f8b036072120e8f350b5f7737391157d_original.avif" alt="Cowboy">
+                <div class="product-title-overlay">Cowboy</div>
+            </a>
+            <a href="productui.html?image=western%20comics/images.jpeg" class="product-item">
+                <img src="western comics/images.jpeg" alt="Planet">
+                <div class="product-title-overlay">Planet</div>
+            </a>
+            <a href="productui.html?image=western%20comics/Western_Comics_1.webp" class="product-item">
+                <img src="western comics/Western_Comics_1.webp" alt="Cowboys 2">
+                <div class="product-title-overlay">Cowboys 2</div>
+            </a>
+            <a href="productui.html?image=western%20comics/Ultimate%20spider%20man.jpg" class="product-item">
+                <img src="western comics/Ultimate spider man.jpg" alt="Ultimate Spider-Man">
+                <div class="product-title-overlay">Ultimate Spider-Man</div>
+            </a>
+            <a href="productui.html?image=western%20comics/Amazing_Fantasy_15.jpg" class="product-item">
+                <img src="western comics/Amazing_Fantasy_15.jpg" alt="Amazing Fantasy #15">
+                <div class="product-title-overlay">Amazing Fantasy #15</div>
+            </a>
+            <a href="productui.html?image=western%20comics/Action_Comics.jpg" class="product-item">
+                <img src="western comics/Action_Comics.jpg" alt="Action Comics">
+                <div class="product-title-overlay">Action Comics</div>
+            </a>
+            <a href="productui.html?image=western%20comics/titans%20%231%20landscape%20format%20marvel%20uk.jpg" class="product-item">
+                <img src="western comics/titans #1 landscape format marvel uk.jpg" alt="Titans #1">
+                <div class="product-title-overlay">Titans #1</div>
+            </a>
+        </div>
+        <button class="nav-button right comic-right">></button>
+    </div>
 
-                <div class="tape5">
-    <img src="a tyape pls work 1.png">
+    <div class="tape5">
+        <img src="images/a tyape pls work 1.png" alt="Tape">
         <div class="tapetext5">Novel</div>
     </div>
-
-                    <div class="tape6">
-    <img src="a tyape pls work 1.png">
-        <div class="tapetext6">Stationaries</div>
+    <div class="products-container novel">
+        <button class="nav-button left novel-left"><</button>
+        <div class="product-grid novel-grid">
+            <a href="productui.html?image=Novel/33f7251d-3c3d-4223-be32-0c637c4164f3.jpg" class="product-item">
+                <img src="Novel/33f7251d-3c3d-4223-be32-0c637c4164f3.jpg" alt="Sentinel">
+                <div class="product-title-overlay">Sentinel</div>
+            </a>
+            <a href="productui.html?image=Novel/4f971bfe-2ea6-4ff7-8c5a-7eba039fa15c.jpg" class="product-item">
+                <img src="Novel/4f971bfe-2ea6-4ff7-8c5a-7eba039fa15c.jpg" alt="Secrets">
+                <div class="product-title-overlay">Secrets</div>
+            </a>
+            <a href="productui.html?image=Novel/9f7d82bf-735b-4800-9672-c17602938a77.jpg" class="product-item">
+                <img src="Novel/9f7d82bf-735b-4800-9672-c17602938a77.jpg" alt="Saving Madonna">
+                <div class="product-title-overlay">Saving Madonna</div>
+            </a>
+            <a href="productui.html?image=Novel/attachment_124417681.jpeg" class="product-item">
+                <img src="Novel/attachment_124417681.jpeg" alt="Backstory">
+                <div class="product-title-overlay">Backstory</div>
+            </a>
+            <a href="productui.html?image=Novel/images%20(1).jpeg" class="product-item">
+                <img src="Novel/images (1).jpeg" alt="Lost Gospel">
+                <div class="product-title-overlay">Lost Gospel</div>
+            </a>
+            <a href="productui.html?image=Novel/images.jpeg" class="product-item">
+                <img src="Novel/images.jpeg" alt="Rowan Chronicle">
+                <div class="product-title-overlay">Rowan Chronicle</div>
+            </a>
+            <a href="productui.html?image=Novel/photo.jpeg" class="product-item">
+                <img src="Novel/photo.jpeg" alt="Milestone">
+                <div class="product-title-overlay">Milestone</div>
+            </a>
+            <a href="productui.html?image=Novel/Diary%20of%20the%20farting%20creeper.jpg" class="product-item">
+                <img src="Novel/Diary of the farting creeper.jpg" alt="Diary of the Farting Creeper">
+                <div class="product-title-overlay">Diary of the Farting Creeper</div>
+            </a>
+            <a href="productui.html?image=Novel/The%20Cheater.jpg" class="product-item">
+                <img src="Novel/The Cheater.jpg" alt="The Cheater">
+                <div class="product-title-overlay">The Cheater</div>
+            </a>
+            <a href="productui.html?image=Novel/Harrypotter.jpg" class="product-item">
+                <img src="Novel/Harrypotter.jpg" alt="Harry Potter">
+                <div class="product-title-overlay">Harry Potter</div>
+            </a>
+        </div>
+        <button class="nav-button right novel-right">></button>
     </div>
 
+    <div class="tape6">
+        <img src="images/a tyape pls work 1.png" alt="Tape">
+        <div class="tapetext6">Stationaries</div>
+    </div>
+    <div class="products-container stationery">
+        <button class="nav-button left stationery-left"><</button>
+        <div class="product-grid stationery-grid">
+            <a href="productui.html?image=Stationary/cutter%20knife.jpg" class="product-item">
+                <img src="Stationary/cutter knife.jpg" alt="Cutter Knife">
+                <div class="product-title-overlay">Cutter Knife</div>
+            </a>
+            <a href="productui.html?image=Stationary/highlights.avif" class="product-item">
+                <img src="Stationary/highlights.avif" alt="Highlights">
+                <div class="product-title-overlay">Highlights</div>
+            </a>
+            <a href="productui.html?image=Stationary/pens.jpg" class="product-item">
+                <img src="Stationary/pens.jpg" alt="Pens">
+                <div class="product-title-overlay">Pens</div>
+            </a>
+            <a href="productui.html?image=Stationary/mechanical%20pencil.jpg" class="product-item">
+                <img src="Stationary/mechanical pencil.jpg" alt="Mechanical Pencil">
+                <div class="product-title-overlay">Mechanical Pencil</div>
+            </a>
+            <a href="productui.html?image=Stationary/pencil.webp" class="product-item">
+                <img src="Stationary/pencil.webp" alt="Pencil">
+                <div class="product-title-overlay">Pencil</div>
+            </a>
+            <a href="productui.html?image=Stationary/water%20colour.jpg" class="product-item">
+                <img src="Stationary/water colour.jpg" alt="Water Colour">
+                <div class="product-title-overlay">Water Colour</div>
+            </a>
+            <a href="productui.html?image=Stationary/colour%20pencils.webp" class="product-item">
+                <img src="Stationary/colour pencils.webp" alt="Colour Pencils">
+                <div class="product-title-overlay">Colour Pencils</div>
+            </a>
+            <a href="productui.html?image=Stationary/gel%20highlighter.jpg" class="product-item">
+                <img src="Stationary/gel highlighter.jpg" alt="Gel Highlighter">
+                <div class="product-title-overlay">Gel Highlighter</div>
+            </a>
+            <a href="productui.html?image=Stationary/manga%20making%20paper.png" class="product-item">
+                <img src="Stationary/manga making paper.png" alt="Manga Making Paper">
+                <div class="product-title-overlay">Manga Making Paper</div>
+            </a>
+            <a href="productui.html?image=Stationary/Ink%20pen.jpg" class="product-item">
+                <img src="Stationary/Ink pen.jpg" alt="Ink Pen">
+                <div class="product-title-overlay">Ink Pen</div>
+            </a>
+        </div>
+        <button class="nav-button right stationery-right">></button>
+    </div>
 
+    <img class="classtest" src="images/shelf.png" alt="Shelf Background">
 
+    <!-- Profile Sidebar -->
+    <div id="profileSidebar" class="profile-sidebar">
+        <button class="close-btn" id="closeSidebarBtn">&times;</button>
+        <div class="sidebar-options">
+            <a href="login.php">Login</a>
+            <a href="sign in.html">Sign In</a>
+            <a href="profile.php">View Profile</a>
+        </div>
+    </div>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-    <img class="classtest" src="shelf.png">
+    <style>
+        /* Category dropdown style (optional, for better look) */
+        #categorySelect {
+            height: 36px;
+            min-width: 90px;
+            max-width: 120px;
+            margin-left: 8px;
+            padding: 0 10px;
+            border-radius: 18px;
+            border: 1px solid #e0bfae;
+            background: #fff8f3;
+            color: #6a1616;
+            font-family: 'Indie Flower', cursive;
+            font-size: 15px;
+            outline: none;
+            box-shadow: 0 1px 4px rgba(255,218,185,0.15);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #categorySelect:focus {
+            border-color: #ffbfae;
+            box-shadow: 0 0 8px #ffdabe;
+        }
+        #categorySelect option {
+            background: #fff8f3;
+            color: #6a1616;
+        }
+        /* Profile Sidebar Styles */
+        .profile-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100%;
+            background: #fff;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.15);
+            z-index: 2001;
+            transform: translateX(-100%);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+            display: flex;
+            flex-direction: column;
+            padding: 32px 24px 24px 24px;
+        }
+        .profile-sidebar.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.25);
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            color: #333;
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            cursor: pointer;
+        }
+        .sidebar-options {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .sidebar-options a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            transition: color 0.2s;
+        }
+        .sidebar-options a:hover {
+            color: #ff4444;
+        }
+    </style>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollAmount = 300;
 
+            // Load and display published items
+            function loadPublishedItems() {
+                const publishedItems = JSON.parse(localStorage.getItem('publishedItems') || '[]');
+                
+                publishedItems.forEach(item => {
+                    // Create product item element
+                    const productItem = document.createElement('a');
+                    productItem.href = `productui.html?title=${encodeURIComponent(item.title)}&author=${encodeURIComponent(item.author)}&price=${encodeURIComponent(item.price)}&description=${encodeURIComponent(item.description)}&quality=${encodeURIComponent(item.quality)}&image=${encodeURIComponent(item.image || '')}`;
+                    productItem.className = 'product-item';
+                    
+                    // Create image element
+                    const img = document.createElement('img');
+                    img.src = item.image || 'images/default.jpg';
+                    img.alt = item.title;
+                    img.onerror = function() {
+                        this.src = 'images/default.jpg';
+                    };
+                    
+                    // Create title overlay
+                    const titleOverlay = document.createElement('div');
+                    titleOverlay.className = 'product-title-overlay';
+                    titleOverlay.textContent = item.title;
+                    
+                    // Add price and quality info
+                    const priceInfo = document.createElement('div');
+                    priceInfo.style.cssText = 'position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8em;';
+                    priceInfo.textContent = `${item.price} - ${item.quality}`;
+                    
+                    // Append elements
+                    productItem.appendChild(img);
+                    productItem.appendChild(titleOverlay);
+                    productItem.appendChild(priceInfo);
+                    
+                    // Add to appropriate category section
+                    let targetGrid;
+                    switch(item.category.toLowerCase()) {
+                        case 'manga':
+                            targetGrid = document.querySelector('.manga-grid');
+                            break;
+                        case 'manhwa':
+                            targetGrid = document.querySelector('.manhwa-grid');
+                            break;
+                        case 'manhua':
+                            targetGrid = document.querySelector('.manhua-grid');
+                            break;
+                        case 'comic':
+                            targetGrid = document.querySelector('.comic-grid');
+                            break;
+                        case 'novel':
+                            targetGrid = document.querySelector('.novel-grid');
+                            break;
+                        case 'stationary':
+                            targetGrid = document.querySelector('.stationery-grid');
+                            break;
+                        default:
+                            targetGrid = document.querySelector('.product-grid');
+                    }
+                    
+                    if (targetGrid) {
+                        targetGrid.appendChild(productItem);
+                    }
+                });
+            }
+
+            // Initialize scrolling for all product sections
+            const sections = [
+                { grid: '.product-grid', left: '.nav-button.left', right: '.nav-button.right' },
+                { grid: '.manga-grid', left: '.manga-left', right: '.manga-right' },
+                { grid: '.manhwa-grid', left: '.manhwa-left', right: '.manhwa-right' },
+                { grid: '.manhua-grid', left: '.manhua-left', right: '.manhua-right' },
+                { grid: '.comic-grid', left: '.comic-left', right: '.comic-right' },
+                { grid: '.novel-grid', left: '.novel-left', right: '.novel-right' },
+                { grid: '.stationery-grid', left: '.stationery-left', right: '.stationery-right' }
+            ];
+
+            sections.forEach(section => {
+                const grid = document.querySelector(section.grid);
+                const leftBtn = document.querySelector(section.left);
+                const rightBtn = document.querySelector(section.right);
+
+                if (grid && leftBtn && rightBtn) {
+                    leftBtn.addEventListener('click', () => {
+                        grid.scrollBy({
+                            left: -scrollAmount,
+                            behavior: 'smooth'
+                        });
+                    });
+
+                    rightBtn.addEventListener('click', () => {
+                        grid.scrollBy({
+                            left: scrollAmount,
+                            behavior: 'smooth'
+                        });
+                    });
+                }
+            });
+
+            // Load published items when page loads
+            loadPublishedItems();
+        });
+
+        function updateFavoritesBadge() {
+            const badge = document.getElementById('favorites-badge');
+            if (!badge) return;
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            if (favorites.length > 0) {
+                badge.textContent = favorites.length;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', updateFavoritesBadge);
+        window.addEventListener('storage', updateFavoritesBadge);
+
+        function updateWishlistBadge() {
+            const badge = document.getElementById('wishlist-badge');
+            if (!badge) return;
+            const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            if (wishlist.length > 0) {
+                badge.textContent = wishlist.length;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', updateWishlistBadge);
+        window.addEventListener('storage', updateWishlistBadge);
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-badge');
+            if (!badge) return;
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
+        window.addEventListener('storage', updateCartBadge);
+
+        // Profile Sidebar Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileBtn = document.getElementById('profileIconBtn');
+            const sidebar = document.getElementById('profileSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const closeBtn = document.getElementById('closeSidebarBtn');
+
+            function openSidebar() {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            }
+            function closeSidebar() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+            profileBtn.addEventListener('click', openSidebar);
+            closeBtn.addEventListener('click', closeSidebar);
+            overlay.addEventListener('click', closeSidebar);
+
+            // Check login status and update sidebar
+            function updateSidebarForLoginStatus() {
+                const currentUser = localStorage.getItem('currentUser');
+                const sidebarOptions = document.querySelector('.sidebar-options');
+                
+                console.log('Checking login status...');
+                console.log('Current user from localStorage:', currentUser);
+                
+                if (currentUser) {
+                    // User is logged in
+                    const user = JSON.parse(currentUser);
+                    console.log('User is logged in:', user.username);
+                    
+                    sidebarOptions.innerHTML = `
+                        <a href="profile.php">View Profile</a>
+                        <a href="#" onclick="logout()">Logout</a>
+                    `;
+                    
+                    // Show welcome message
+                    showWelcomeMessage(user.username);
+                } else {
+                    // User is not logged in
+                    console.log('No user logged in');
+                    
+                    sidebarOptions.innerHTML = `
+                        <a href="login.php">Login</a>
+                        <a href="register.php">Register</a>
+                    `;
+                    
+                    // Hide welcome message
+                    hideWelcomeMessage();
+                }
+            }
+
+            // Show welcome message
+            function showWelcomeMessage(username) {
+                // Remove existing welcome message if any
+                hideWelcomeMessage();
+                
+                // Create welcome message
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.id = 'welcomeMessage';
+                welcomeDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #3498db, #2980b9);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 25px;
+                    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+                    z-index: 1000;
+                    font-family: 'Indie Flower', cursive;
+                    font-weight: bold;
+                    font-size: 16px;
+                    animation: slideInRight 0.5s ease-out;
+                    max-width: 300px;
+                `;
+                welcomeDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>👋</span>
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9;">Welcome back!</div>
+                            <div style="font-size: 18px;">${username}</div>
+                        </div>
+                        <button onclick="hideWelcomeMessage()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; margin-left: 10px;">×</button>
+                    </div>
+                `;
+                
+                // Add CSS animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from {
+                            transform: translateX(100%);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(welcomeDiv);
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    if (welcomeDiv.parentNode) {
+                        welcomeDiv.style.animation = 'slideInRight 0.5s ease-out reverse';
+                        setTimeout(() => {
+                            if (welcomeDiv.parentNode) {
+                                welcomeDiv.remove();
+                            }
+                        }, 500);
+                    }
+                }, 5000);
+            }
+
+            // Hide welcome message
+            function hideWelcomeMessage() {
+                const existingMessage = document.getElementById('welcomeMessage');
+                if (existingMessage) {
+                    existingMessage.remove();
+                }
+            }
+
+            // Make hideWelcomeMessage globally accessible
+            window.hideWelcomeMessage = hideWelcomeMessage;
+
+            // Update sidebar on page load
+            updateSidebarForLoginStatus();
+
+            // Update sidebar when storage changes (for logout)
+            window.addEventListener('storage', updateSidebarForLoginStatus);
+        });
+
+        // Logout function for main page
+        function logout() {
+            // Clear all user session data
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('profileImage');
+            localStorage.removeItem('userProfile');
+            localStorage.removeItem('userData');
+            
+            // Clear cart and shopping data
+            localStorage.removeItem('cart');
+            localStorage.removeItem('wishlist');
+            localStorage.removeItem('favorites');
+            localStorage.removeItem('recentOrders');
+            localStorage.removeItem('orderHistory');
+            
+            // Clear any form data or temporary data
+            localStorage.removeItem('tempFormData');
+            localStorage.removeItem('searchHistory');
+            localStorage.removeItem('viewedProducts');
+            
+            // Clear any authentication tokens
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('sessionToken');
+            localStorage.removeItem('loginStatus');
+            
+            // Clear any user preferences
+            localStorage.removeItem('userPreferences');
+            localStorage.removeItem('theme');
+            localStorage.removeItem('language');
+            
+            // Clear any cached data
+            sessionStorage.clear();
+            
+            // Update badges to show empty state
+            updateCartBadge();
+            updateWishlistBadge();
+            updateFavoritesBadge();
+            
+            // Show logout message
+            alert('You have been logged out successfully! All data has been cleared.');
+            
+            // Refresh the page to update sidebar
+            location.reload();
+        }
+
+        // Enhanced search bar logic for category filter
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+            const categorySelect = document.getElementById('categorySelect');
+            if (searchForm && searchInput && categorySelect) {
+                // Auto-redirect on category change
+                categorySelect.addEventListener('change', function() {
+                    const category = categorySelect.value;
+                    if (category !== 'all') {
+                        window.location.href = `searchresultpage.html?category=${encodeURIComponent(category)}`;
+                    }
+                });
+                // Submit logic for search icon
+                searchForm.addEventListener('submit', function(e) {
+                    const category = categorySelect.value;
+                    const query = searchInput.value.trim();
+                    if (category !== 'all') {
+                        e.preventDefault();
+                        window.location.href = `searchresultpage.html?category=${encodeURIComponent(category)}`;
+                    } else if (query.length > 0) {
+                        // Let the form submit as normal (query param)
+                    } else {
+                        e.preventDefault();
+                        window.location.href = `searchresultpage.html`;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

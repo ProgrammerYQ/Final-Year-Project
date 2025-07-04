@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Indie Flower', cursive;
+    font-weight: bold;
+}
+
+body {
+    font-family: 'Indie Flower', cursive;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    font-weight: bold;
+}
+
+
+.form-wrapper {
+  max-width: 600px;
+  margin: 60px auto;
+  background: rgb(233, 143, 143);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.tsite-form .form-group {
+  margin-bottom: 20px;
+}
+
+.tsite-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.tsite-form input,
+.tsite-form textarea,
+.tsite-form select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+.tsite-form input:focus,
+.tsite-form textarea:focus,
+.tsite-form select:focus {
+  outline: none;
+  border-color: #e91e63;
+}
+
+.button {
+  background-color: #000;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #333;
+}
+
+
+.buy-background,
+.wishlist-background {
+  background: url('outstanding-customer in kinoniya 1.png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.buy-wrapper,
+.wishlist-wrapper {
+  max-width: 600px;
+  margin: 80px auto;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 30px;
+}
+
+
+.wishlist-item {
+  margin-bottom: 15px;
+}
+
+
+.receipt-wrapper {
+  max-width: 600px;
+  margin: 60px auto;
+  background: #fdfdfd;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.receipt-wrapper h2 {
+  color: #111;
+}
+
+body.tsite-theme.receipt-background {
+  background: url('images/unsplash_XFWiZTa2Ub0 (1).png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+
+.icon-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 16px 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.6em;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.icon-button:hover {
+  background-color: #333;
+}
+
+
+.product-info {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-left: 4px solid #000;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.product-info p {
+  margin: 6px 0;
+  font-size: 1em;
+  color: #333;
+}
+
+.product-info p strong {
+  color: #000;
+}
+
+.cancel-button {
+    background: #95a5a6;
+    color: white;
+    margin-right: 10px;
+}
+
+.cancel-button:hover {
+    background: #7f8c8d;
+    transform: translateY(-2px);
+}

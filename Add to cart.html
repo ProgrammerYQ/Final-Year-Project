@@ -1,0 +1,265 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: welcome.php');
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Otaku Haven</title>
+    <link rel="stylesheet" href="Add to cart.css">
+</head>
+<body>
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1 class="cart-title">Shopping Cart</h1>
+            <p class="cart-subtitle">Your selected items</p>
+        </div>
+        
+        <div class="cart-content" id="cartContent">
+            <!-- Cart items will be populated here -->
+        </div>
+        
+        <div class="cart-summary" id="cartSummary" style="display: none;">
+            <div class="total-section">
+                <span class="total-title">Total:</span>
+                <span class="total-price" id="totalPrice">$0.00</span>
+            </div>
+            <div class="cart-actions">
+                <button class="cart-btn continue-shopping" onclick="window.location.href='OtakuHavenProto.html'">Continue Shopping</button>
+                <button class="cart-btn checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+                <button class="btn-cancel-round" onclick="window.location.href='OtakuHavenProto.html'">Cancel</button>
+            </div>
+        </div>
+        
+        <div class="empty-cart" id="emptyCart">
+            <h2>Your cart is empty</h2>
+            <p>Looks like you haven't added any items to your cart yet.</p>
+            <button class="cart-btn continue-shopping" onclick="window.location.href='OtakuHavenProto.html'">Start Shopping</button>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Please log in to view your cart.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Load cart if user is authenticated
+            loadCart();
+        });
+
+        // Cart management functions
+        let cart = [];
+
+        // Load cart from localStorage
+        function loadCart() {
+            cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            displayCart();
+        }
+
+        // Save cart to localStorage
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+        }
+
+        // Display cart items
+        function displayCart() {
+            const cartContent = document.getElementById('cartContent');
+            const cartSummary = document.getElementById('cartSummary');
+            const emptyCart = document.getElementById('emptyCart');
+
+            if (cart.length === 0) {
+                cartContent.style.display = 'none';
+                cartSummary.style.display = 'none';
+                emptyCart.style.display = 'block';
+                return;
+            }
+
+            cartContent.style.display = 'block';
+            cartSummary.style.display = 'block';
+            emptyCart.style.display = 'none';
+
+            cartContent.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="cart-img">
+                    <div class="cart-details">
+                        <h3 class="cart-product-title">${item.title}</h3>
+                        <p class="cart-price">${item.price}</p>
+                        <p class="cart-condition">Condition: ${item.condition}</p>
+                        <p class="cart-seller">Seller: ${item.seller}</p>
+                    </div>
+                    <div class="cart-quantity">
+                        <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                        <span class="quantity-display">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                    </div>
+                    <button class="cart-remove" onclick="removeItem(${index})">Remove</button>
+                `;
+                cartContent.appendChild(cartItem);
+            });
+
+            updateTotal();
+        }
+
+        // Update item quantity
+        function updateQuantity(index, change) {
+            if (cart[index].quantity + change > 0) {
+                cart[index].quantity += change;
+                saveCart();
+                displayCart();
+            } else if (cart[index].quantity + change === 0) {
+                removeItem(index);
+            }
+        }
+
+        // Remove item from cart
+        function removeItem(index) {
+            if (confirm('Are you sure you want to remove this item from your cart?')) {
+                cart.splice(index, 1);
+                saveCart();
+                displayCart();
+            }
+        }
+
+        // Update total price
+        function updateTotal() {
+            const total = cart.reduce((sum, item) => {
+                const price = parseFloat(item.price.replace('$', ''));
+                return sum + (price * item.quantity);
+            }, 0);
+            
+            document.getElementById('totalPrice').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Update cart badge on homepage
+        function updateCartBadge() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            
+            // Try to update badge on homepage if we're in an iframe or have access
+            try {
+                const badge = document.getElementById('wishlist-badge');
+                if (badge) {
+                    if (totalItems > 0) {
+                        badge.textContent = totalItems;
+                        badge.style.display = 'block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            } catch (e) {
+                // Badge not found, that's okay
+            }
+        }
+
+        // Proceed to checkout
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            // Save cart data for the buy page
+            localStorage.setItem('buyNow', JSON.stringify(cart));
+            
+            // Redirect to buy page
+            window.location.href = 'buy.html';
+        }
+
+        // Clear entire cart
+        function clearCart() {
+            if (confirm('Are you sure you want to clear your entire cart?')) {
+                cart = [];
+                saveCart();
+                displayCart();
+            }
+        }
+
+        // Search functionality
+        function searchCart(query) {
+            const filteredCart = cart.filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.seller.toLowerCase().includes(query.toLowerCase()) ||
+                item.condition.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            // Display filtered results
+            displayFilteredCart(filteredCart);
+        }
+
+        // Display filtered cart
+        function displayFilteredCart(filteredCart) {
+            const cartContent = document.getElementById('cartContent');
+            const cartSummary = document.getElementById('cartSummary');
+            const emptyCart = document.getElementById('emptyCart');
+
+            if (filteredCart.length === 0) {
+                cartContent.style.display = 'none';
+                cartSummary.style.display = 'none';
+                emptyCart.style.display = 'block';
+                emptyCart.innerHTML = `
+                    <h2>No items found</h2>
+                    <p>No items match your search criteria.</p>
+                    <button class="cart-btn continue-shopping" onclick="displayCart()">Show All Items</button>
+                `;
+                return;
+            }
+
+            cartContent.style.display = 'block';
+            cartSummary.style.display = 'block';
+            emptyCart.style.display = 'none';
+
+            cartContent.innerHTML = '';
+
+            filteredCart.forEach((item, index) => {
+                const originalIndex = cart.findIndex(cartItem => 
+                    cartItem.title === item.title && cartItem.condition === item.condition
+                );
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="cart-img">
+                    <div class="cart-details">
+                        <h3 class="cart-product-title">${item.title}</h3>
+                        <p class="cart-price">${item.price}</p>
+                        <p class="cart-condition">Condition: ${item.condition}</p>
+                        <p class="cart-seller">Seller: ${item.seller}</p>
+                    </div>
+                    <div class="cart-quantity">
+                        <button class="quantity-btn" onclick="updateQuantity(${originalIndex}, -1)">-</button>
+                        <span class="quantity-display">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${originalIndex}, 1)">+</button>
+                    </div>
+                    <button class="cart-remove" onclick="removeItem(${originalIndex})">Remove</button>
+                `;
+                cartContent.appendChild(cartItem);
+            });
+
+            updateTotal();
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveCart();
+                alert('Cart saved!');
+            }
+        });
+    </script>
+</body>
+</html>

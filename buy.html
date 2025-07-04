@@ -1,0 +1,163 @@
+<!-- buy.html - T-Site Aesthetic Static Version -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy Now | Otaku Haven</title>
+  <link rel="stylesheet" href="tsite-style.css">
+</head>
+<body class="tsite-theme buy-background">
+  <button class="icon-button" onclick="window.location.href='OtakuHavenProto.html'">🏠</button>
+  <div class="buy-wrapper">
+    <h2 class="form-title">Buy Now</h2>
+
+    <div class="product-info" id="product-info">
+      <!-- Products will be populated here -->
+    </div>
+
+    <form id="buy-form" class="tsite-form">
+      <div class="form-group">
+        <label>Shipping Method</label>
+        <select name="shipping" required>
+          <option value="fast">Fast</option>
+          <option value="standard">Standard</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select name="payment" required>
+          <option value="bank">Bank Transfer</option>
+          <option value="ewallet">E-Wallet</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Delivery Address</label>
+        <textarea name="address" required></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="button cancel-button" onclick="window.location.href='OtakuHavenProto.html'">Cancel</button>
+        <button type="submit" class="button">Place Order</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Load product details from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+      const infoDiv = document.getElementById('product-info');
+      const buyNow = localStorage.getItem('buyNow');
+      
+      if (buyNow) {
+        const productData = JSON.parse(buyNow);
+        
+        // Check if it's a cart (array) or single product (object)
+        if (Array.isArray(productData)) {
+          // Handle cart items
+          displayCartItems(productData, infoDiv);
+        } else {
+          // Handle single product
+          displaySingleProduct(productData, infoDiv);
+        }
+      } else {
+        infoDiv.innerHTML = '<p>No product information found.</p>';
+      }
+    });
+
+    function displayCartItems(cart, container) {
+      let totalPrice = 0;
+      let totalItems = 0;
+      
+      let html = '<h3>Your Cart Items:</h3>';
+      
+      cart.forEach((item, index) => {
+        const price = parseFloat(item.price.replace('$', ''));
+        const itemTotal = price * item.quantity;
+        totalPrice += itemTotal;
+        totalItems += item.quantity;
+        
+        html += `
+          <div class="cart-item-display" style="border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; background: rgba(255,255,255,0.9);">
+            ${item.image ? `<img src="${item.image}" alt="${item.title}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;float:left;margin-right:15px;">` : ''}
+            <div style="overflow:hidden;">
+              <p><strong>Title:</strong> ${item.title}</p>
+              <p><strong>Condition:</strong> ${item.condition || 'N/A'}</p>
+              <p><strong>Seller:</strong> ${item.seller}</p>
+              <p><strong>Price:</strong> ${item.price} x ${item.quantity} = $${itemTotal.toFixed(2)}</p>
+              <p><strong>Description:</strong> ${item.description}</p>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        `;
+      });
+      
+      html += `
+        <div style="border-top: 2px solid #333; padding-top: 15px; margin-top: 20px;">
+          <p><strong>Total Items:</strong> ${totalItems}</p>
+          <p><strong>Total Price:</strong> $${totalPrice.toFixed(2)}</p>
+        </div>
+      `;
+      
+      container.innerHTML = html;
+    }
+
+    function displaySingleProduct(product, container) {
+      container.innerHTML = `
+        <div class="single-product-display" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.9);">
+          ${product.image ? `<img src="${product.image}" alt="${product.title}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 10px auto;">` : ''}
+          <p><strong>Title:</strong> ${product.title}</p>
+          <p><strong>Condition:</strong> ${product.condition || 'N/A'}</p>
+          <p><strong>Seller:</strong> ${product.seller}</p>
+          <p><strong>Price:</strong> ${product.price}</p>
+          <p><strong>Description:</strong> ${product.description}</p>
+        </div>
+      `;
+    }
+
+    // Handle form submission
+    document.getElementById('buy-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(this);
+      const shipping = formData.get('shipping');
+      const payment = formData.get('payment');
+      const address = formData.get('address');
+      
+      // Get product data
+      const buyNow = localStorage.getItem('buyNow');
+      const productData = JSON.parse(buyNow);
+      
+      // Create order object
+      const order = {
+        items: Array.isArray(productData) ? productData : [productData],
+        shipping: shipping,
+        payment: payment,
+        address: address,
+        orderDate: new Date().toISOString(),
+        orderId: 'ORD-' + Date.now()
+      };
+      
+      // Save order to localStorage
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+      
+      // Clear cart if it was a cart purchase
+      if (Array.isArray(productData)) {
+        localStorage.removeItem('cart');
+      }
+      
+      // Clear buyNow data
+      localStorage.removeItem('buyNow');
+      
+      // Show success message and redirect
+      alert('Order placed successfully! Order ID: ' + order.orderId);
+      window.location.href = 'receipt.html';
+    });
+  </script>
+</body>
+</html>

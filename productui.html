@@ -1,0 +1,1412 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: welcome.php');
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page - Otaku Haven</title>
+    <link rel="stylesheet" href="produtui.css">
+</head>
+<body>
+<div class="product-container">
+    <div class="product-image">
+        <img id="main-product-image" src="Japanese manga/10-best-one-piece-manga-panels.avif" alt="One Piece Manga Panels">
+    </div>
+    <div class="product-details">
+        <h1 class="product-title" style="display:inline-block;vertical-align:middle;">One Piece Manga Panel Collection</h1>
+        <div class="condition-badge" id="condition-badge">First Hand</div>
+        <div class="product-price">$49.99</div>
+        <p class="product-description">
+            A premium collection of the 10 best manga panels from One Piece, printed on high-quality archival paper. 
+            Perfect for fans and collectors alike.
+        </p>
+        <div class="seller-info">
+            <div class="seller-avatar"></div>
+            <span class="seller-name">MangaMaster</span>
+        </div>
+        
+        <div class="condition-details">
+            <h3 class="section-title">CONDITION DETAILS</h3>
+            <div class="condition-info" id="condition-info">
+                <!-- Condition details will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="reviews-section">
+            <h3 class="section-title">REVIEWS</h3>
+            
+            <!-- Existing Reviews Display -->
+            <div class="reviews-container" id="reviewsContainer">
+                <!-- Reviews will be populated by JavaScript -->
+            </div>
+            
+            <!-- Review Submission Form -->
+            <div class="review-form-section">
+                <h4 class="review-form-title">Write a Review</h4>
+                
+                <form class="review-form" id="reviewForm">
+                    <div class="rating-section">
+                        <label>Your Rating:</label>
+                        <div class="star-rating">
+                            <input type="radio" name="rating" value="5" id="star5">
+                            <label for="star5">★</label>
+                            <input type="radio" name="rating" value="4" id="star4">
+                            <label for="star4">★</label>
+                            <input type="radio" name="rating" value="3" id="star3">
+                            <label for="star3">★</label>
+                            <input type="radio" name="rating" value="2" id="star2">
+                            <label for="star2">★</label>
+                            <input type="radio" name="rating" value="1" id="star1">
+                            <label for="star1">★</label>
+                        </div>
+                    </div>
+                    <textarea class="review-input" placeholder="Share your thoughts about this product..." required></textarea>
+                    <button type="submit" class="btn btn-submit">SUBMIT REVIEW</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn-cancel-round" onclick="window.location.href='OtakuHavenProto.html'">Cancel</button>
+            <button class="btn btn-add-to-cart">ADD TO CART</button>
+            <button class="btn btn-buy">BUY</button>
+            <button class="btn-wishlist">ADD TO WISHLIST</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Product database with condition-specific information
+    const products = {
+        '10-best-one-piece-manga-panels': {
+            title: 'One Piece Manga Panel Collection',
+            priceFirst: '$49.99',
+            priceSecond: '$29.99',
+            priceThird: '$19.99',
+            sellerFirst: 'MangaMaster',
+            sellerSecond: 'AnimeFan123',
+            sellerThird: 'CollectorZ',
+            descriptionFirst: 'Brand new, never used collection of premium One Piece manga panels. Perfect for fans and collectors alike.',
+            descriptionSecond: 'Gently used collection in excellent condition. Minor shelf wear but all panels are in perfect condition.',
+            descriptionThird: 'Well-loved collection with some signs of wear. Still beautiful and display-worthy with character.',
+            conditionDetailsFirst: '• Brand new, never opened\n• Original packaging included\n• Premium archival paper\n• No defects or damage\n• Collector\'s edition quality',
+            conditionDetailsSecond: '• Gently used, excellent condition\n• Minor shelf wear on edges\n• All panels intact and undamaged\n• Clean and well-maintained\n• Great value for collectors',
+            conditionDetailsThird: '• Well-loved with visible wear\n• Some creases and minor damage\n• Still beautiful and displayable\n• Perfect for casual fans\n• Affordable option'
+        },
+        'Jujutsu_kaisen': {
+            title: 'Jujutsu Kaisen Volume Set',
+            priceFirst: '$59.99',
+            priceSecond: '$28.99',
+            priceThird: '$18.99',
+            sellerFirst: 'SorceryShop',
+            sellerSecond: 'AnimeCollector',
+            sellerThird: 'VintageManga',
+            descriptionFirst: 'Complete box set of Jujutsu Kaisen manga series, including special edition covers and bonus content.',
+            descriptionSecond: 'Volumes in very good condition with minimal wear. Complete set with all bonus materials.',
+            descriptionThird: 'Well-used set with some wear. All volumes present but showing signs of use.',
+            conditionDetailsFirst: '• Brand new sealed box set\n• All volumes included\n• Special edition covers\n• Bonus content intact\n• Collector\'s item',
+            conditionDetailsSecond: '• Very good condition\n• Complete set with all volumes\n• Minor shelf wear\n• All pages intact\n• Great reading condition',
+            conditionDetailsThird: '• Well-used condition\n• Complete set\n• Visible wear and tear\n• Still readable\n• Budget-friendly option'
+        },
+        'business proposal': {
+            title: 'Business Proposal',
+            priceFirst: '$24.99',
+            priceSecond: '$14.99',
+            priceThird: '$9.99',
+            sellerFirst: 'KoreaManga',
+            sellerSecond: 'ManhwaFan',
+            sellerThird: 'BudgetCollector',
+            descriptionFirst: 'Brand new Business Proposal manhwa poster in perfect condition.',
+            descriptionSecond: 'Excellent condition Business Proposal poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still beautiful.',
+            conditionDetailsFirst: '• Brand new poster\n• No creases or damage\n• Vibrant colors\n• Ready to frame\n• Perfect condition',
+            conditionDetailsSecond: '• Excellent condition\n• Minor edge wear\n• Colors still vibrant\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some creases and wear\n• Colors slightly faded\n• Still displayable\n• Affordable price'
+        },
+        '71jqm3aQqpL._AC_SL1500_': {
+            title: 'Romance Manga Collection',
+            priceFirst: '$39.99',
+            priceSecond: '$24.99',
+            priceThird: '$14.99',
+            sellerFirst: 'MangaRomance',
+            sellerSecond: 'RomanceFan',
+            sellerThird: 'VintageCollector',
+            descriptionFirst: 'Brand new romance manga collection featuring beautiful artwork and stories.',
+            descriptionSecond: 'Gently used romance collection in excellent condition with minimal wear.',
+            descriptionThird: 'Well-loved collection with some wear but still charming and readable.',
+            conditionDetailsFirst: '• Brand new collection\n• All volumes included\n• Perfect condition\n• Original covers\n• Collector\'s quality',
+            conditionDetailsSecond: '• Excellent used condition\n• Complete collection\n• Minor wear\n• Clean pages\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Complete set\n• Visible wear\n• Still enjoyable\n• Budget option'
+        },
+        '71xQCzfzYLL._AC_UF894,1000_QL80_': {
+            title: 'Initial D Complete Series',
+            priceFirst: '$59.99',
+            priceSecond: '$34.99',
+            priceThird: '$19.99',
+            sellerFirst: 'RacingFan',
+            sellerSecond: 'SpeedCollector',
+            sellerThird: 'VintageRacing',
+            descriptionFirst: 'Complete Initial D manga series in brand new condition with all volumes.',
+            descriptionSecond: 'Excellent condition Initial D series with minimal wear and complete volumes.',
+            descriptionThird: 'Well-used Initial D series with some wear but complete and readable.',
+            conditionDetailsFirst: '• Brand new complete series\n• All volumes included\n• Perfect condition\n• Original packaging\n• Collector\'s edition',
+            conditionDetailsSecond: '• Excellent used condition\n• Complete series\n• Minor shelf wear\n• All pages intact\n• Great reading condition',
+            conditionDetailsThird: '• Well-used condition\n• Complete series\n• Visible wear\n• Still readable\n• Affordable option'
+        },
+        'cool-poster-art-for-chainsaw-man-created-by-vincent-aseo': {
+            title: 'Chainsaw Man Poster Art',
+            priceFirst: '$29.99',
+            priceSecond: '$19.99',
+            priceThird: '$12.99',
+            sellerFirst: 'ArtGallery',
+            sellerSecond: 'AnimeArt',
+            sellerThird: 'BudgetArt',
+            descriptionFirst: 'Brand new Chainsaw Man poster with stunning artwork by Vincent Aseo.',
+            descriptionSecond: 'Excellent condition Chainsaw Man poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but artwork still impressive.',
+            conditionDetailsFirst: '• Brand new poster\n• High-quality print\n• No damage\n• Vibrant colors\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor edge wear\n• Colors vibrant\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear visible\n• Colors slightly faded\n• Still displayable\n• Budget price'
+        },
+        'Itaewon Class': {
+            title: 'Itaewon Class',
+            priceFirst: '$22.99',
+            priceSecond: '$14.99',
+            priceThird: '$9.99',
+            sellerFirst: 'DramaCollector',
+            sellerSecond: 'KoreaFan',
+            sellerThird: 'BudgetDrama',
+            descriptionFirst: 'Brand new Itaewon Class manhwa poster in perfect condition.',
+            descriptionSecond: 'Excellent condition Itaewon Class poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still beautiful.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• No damage\n• Vibrant colors\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Colors good\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Colors faded\n• Still displayable\n• Affordable'
+        },
+        'Navillera': {
+            title: 'Navillera',
+            priceFirst: '$21.99',
+            priceSecond: '$13.99',
+            priceThird: '$8.99',
+            sellerFirst: 'BalletFan',
+            sellerSecond: 'DanceCollector',
+            sellerThird: 'BudgetBallet',
+            descriptionFirst: 'Brand new Navillera manhwa poster featuring beautiful ballet artwork.',
+            descriptionSecond: 'Excellent condition Navillera poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still elegant.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Elegant artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still elegant\n• Budget price'
+        },
+        'Our Beloved Summer': {
+            title: 'Our Beloved Summer',
+            priceFirst: '$23.99',
+            priceSecond: '$15.99',
+            priceThird: '$10.99',
+            sellerFirst: 'RomanceShop',
+            sellerSecond: 'SummerFan',
+            sellerThird: 'BudgetRomance',
+            descriptionFirst: 'Brand new Our Beloved Summer manhwa poster in perfect condition.',
+            descriptionSecond: 'Excellent condition Our Beloved Summer poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still romantic.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Romantic artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still romantic\n• Affordable'
+        },
+        'Romance 101': {
+            title: 'Romance 101',
+            priceFirst: '$20.99',
+            priceSecond: '$12.99',
+            priceThird: '$7.99',
+            sellerFirst: 'Romance101',
+            sellerSecond: 'LoveCollector',
+            sellerThird: 'BudgetLove',
+            descriptionFirst: 'Brand new Romance 101 manhwa poster featuring sweet romantic artwork.',
+            descriptionSecond: 'Excellent condition Romance 101 poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still sweet.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Sweet artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still sweet\n• Budget price'
+        },
+        'sweet home': {
+            title: 'Sweet Home',
+            priceFirst: '$22.99',
+            priceSecond: '$14.99',
+            priceThird: '$9.99',
+            sellerFirst: 'HorrorFan',
+            sellerSecond: 'ThrillerCollector',
+            sellerThird: 'BudgetHorror',
+            descriptionFirst: 'Brand new Sweet Home manhwa poster featuring intense artwork.',
+            descriptionSecond: 'Excellent condition Sweet Home poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still intense.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Intense artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still intense\n• Affordable'
+        },
+        'True Beauty': {
+            title: 'True Beauty',
+            priceFirst: '$21.99',
+            priceSecond: '$13.99',
+            priceThird: '$8.99',
+            sellerFirst: 'BeautyShop',
+            sellerSecond: 'BeautyFan',
+            sellerThird: 'BudgetBeauty',
+            descriptionFirst: 'Brand new True Beauty manhwa poster featuring beautiful artwork.',
+            descriptionSecond: 'Excellent condition True Beauty poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still beautiful.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Beautiful artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still beautiful\n• Budget price'
+        },
+        'haikyu': {
+            title: 'Haikyuu!! Volleyball Manga',
+            priceFirst: '$44.99',
+            priceSecond: '$29.99',
+            priceThird: '$19.99',
+            sellerFirst: 'VolleyballFan',
+            sellerSecond: 'SportsManga',
+            sellerThird: 'VintageSports',
+            descriptionFirst: 'Brand new Haikyuu!! volleyball manga collection in perfect condition.',
+            descriptionSecond: 'Excellent condition Haikyuu!! manga with minimal wear.',
+            descriptionThird: 'Well-used Haikyuu!! manga with some wear but still exciting.',
+            conditionDetailsFirst: '• Brand new collection\n• Perfect condition\n• All volumes included\n• No damage\n• Collector\'s quality',
+            conditionDetailsSecond: '• Excellent condition\n• Minor shelf wear\n• Complete collection\n• Clean pages\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Visible wear\n• Complete set\n• Still readable\n• Budget option'
+        },
+        'slamdunk': {
+            title: 'Slam Dunk Basketball Manga',
+            priceFirst: '$49.99',
+            priceSecond: '$34.99',
+            priceThird: '$24.99',
+            sellerFirst: 'BasketballFan',
+            sellerSecond: 'SportsCollector',
+            sellerThird: 'VintageBasketball',
+            descriptionFirst: 'Brand new Slam Dunk basketball manga collection featuring epic sports action.',
+            descriptionSecond: 'Excellent condition Slam Dunk manga with minimal wear.',
+            descriptionThird: 'Well-used Slam Dunk manga with some wear but still thrilling.',
+            conditionDetailsFirst: '• Brand new collection\n• Perfect condition\n• Epic artwork\n• No damage\n• Collector\'s edition',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Complete set\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still exciting\n• Affordable'
+        },
+        'fate': {
+            title: 'Fate Series Manga',
+            priceFirst: '$54.99',
+            priceSecond: '$39.99',
+            priceThird: '$29.99',
+            sellerFirst: 'FateCollector',
+            sellerSecond: 'AnimeMaster',
+            sellerThird: 'VintageFate',
+            descriptionFirst: 'Brand new Fate series manga collection with stunning artwork and epic battles.',
+            descriptionSecond: 'Excellent condition Fate series manga with minimal wear.',
+            descriptionThird: 'Well-used Fate series manga with some wear but still magical.',
+            conditionDetailsFirst: '• Brand new collection\n• Perfect condition\n• Stunning artwork\n• No damage\n• Collector\'s quality',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Complete series\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still magical\n• Budget option'
+        },
+        'demonslayer': {
+            title: 'Demon Slayer Manga',
+            priceFirst: '$59.99',
+            priceSecond: '$44.99',
+            priceThird: '$34.99',
+            sellerFirst: 'DemonSlayerFan',
+            sellerSecond: 'AnimeCollector',
+            sellerThird: 'VintageDemon',
+            descriptionFirst: 'Brand new Demon Slayer manga collection featuring breathtaking artwork and intense battles.',
+            descriptionSecond: 'Excellent condition Demon Slayer manga with minimal wear.',
+            descriptionThird: 'Well-used Demon Slayer manga with some wear but still powerful.',
+            conditionDetailsFirst: '• Brand new collection\n• Perfect condition\n• Breathtaking artwork\n• No damage\n• Collector\'s edition',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Complete series\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still powerful\n• Affordable'
+        },
+        'filters_quality(95)format(webp)': {
+            title: 'Durarara!! Light Novel Set',
+            priceFirst: '$42.99',
+            priceSecond: '$27.99',
+            priceThird: '$17.99',
+            sellerFirst: 'NovelWorld',
+            sellerSecond: 'LightNovelFan',
+            sellerThird: 'VintageNovel',
+            descriptionFirst: 'Brand new Durarara!! light novel set with beautiful covers and engaging stories.',
+            descriptionSecond: 'Excellent condition Durarara!! light novels with minimal wear.',
+            descriptionThird: 'Well-used Durarara!! light novels with some wear but still engaging.',
+            conditionDetailsFirst: '• Brand new set\n• Perfect condition\n• Beautiful covers\n• No damage\n• Collector\'s quality',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Covers intact\n• Complete set\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Covers visible\n• Still engaging\n• Budget option'
+        },
+        'omniscient reader': {
+            title: 'Omniscient Reader',
+            priceFirst: '$26.99',
+            priceSecond: '$16.99',
+            priceThird: '$11.99',
+            sellerFirst: 'ReaderFan',
+            sellerSecond: 'ManhwaCollector',
+            sellerThird: 'BudgetReader',
+            descriptionFirst: 'Brand new Omniscient Reader manhwa poster featuring stunning artwork.',
+            descriptionSecond: 'Excellent condition Omniscient Reader poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still stunning.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Stunning artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still stunning\n• Affordable'
+        },
+        'omniscient reader.jpg': {
+            title: 'Omniscient Reader',
+            priceFirst: '$26.99',
+            priceSecond: '$16.99',
+            priceThird: '$11.99',
+            sellerFirst: 'ReaderFan',
+            sellerSecond: 'ManhwaCollector',
+            sellerThird: 'BudgetReader',
+            descriptionFirst: 'Brand new Omniscient Reader manhwa poster featuring stunning artwork.',
+            descriptionSecond: 'Excellent condition Omniscient Reader poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still stunning.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Stunning artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still stunning\n• Affordable'
+        },
+        'Lookism': {
+            title: 'Lookism',
+            priceFirst: '$25.99',
+            priceSecond: '$15.99',
+            priceThird: '$10.99',
+            sellerFirst: 'LookismFan',
+            sellerSecond: 'ManhwaLover',
+            sellerThird: 'BudgetLookism',
+            descriptionFirst: 'Brand new Lookism manhwa poster featuring compelling artwork.',
+            descriptionSecond: 'Excellent condition Lookism poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still compelling.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Compelling artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still compelling\n• Budget price'
+        },
+        'Lookism.jpg': {
+            title: 'Lookism',
+            priceFirst: '$25.99',
+            priceSecond: '$15.99',
+            priceThird: '$10.99',
+            sellerFirst: 'LookismFan',
+            sellerSecond: 'ManhwaLover',
+            sellerThird: 'BudgetLookism',
+            descriptionFirst: 'Brand new Lookism manhwa poster featuring compelling artwork.',
+            descriptionSecond: 'Excellent condition Lookism poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still compelling.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Compelling artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still compelling\n• Budget price'
+        },
+        'Solo_Leveling': {
+            title: 'Solo Leveling',
+            priceFirst: '$27.99',
+            priceSecond: '$17.99',
+            priceThird: '$12.99',
+            sellerFirst: 'SoloLevelingFan',
+            sellerSecond: 'ManhwaMaster',
+            sellerThird: 'BudgetSolo',
+            descriptionFirst: 'Brand new Solo Leveling manhwa poster featuring epic artwork.',
+            descriptionSecond: 'Excellent condition Solo Leveling poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still epic.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Epic artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still epic\n• Affordable'
+        },
+        'Solo_Leveling.webp': {
+            title: 'Solo Leveling',
+            priceFirst: '$27.99',
+            priceSecond: '$17.99',
+            priceThird: '$12.99',
+            sellerFirst: 'SoloLevelingFan',
+            sellerSecond: 'ManhwaMaster',
+            sellerThird: 'BudgetSolo',
+            descriptionFirst: 'Brand new Solo Leveling manhwa poster featuring epic artwork.',
+            descriptionSecond: 'Excellent condition Solo Leveling poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still epic.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Epic artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still epic\n• Affordable'
+        },
+        '5-A-256255-1030x842': {
+            title: 'Family',
+            priceFirst: '$23.99',
+            priceSecond: '$14.99',
+            priceThird: '$9.99',
+            sellerFirst: 'FamilyFan',
+            sellerSecond: 'ManhuaCollector',
+            sellerThird: 'BudgetFamily',
+            descriptionFirst: 'Brand new Family manhua poster featuring heartwarming artwork.',
+            descriptionSecond: 'Excellent condition Family poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still heartwarming.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Heartwarming artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still heartwarming\n• Affordable'
+        },
+        'default': {
+            title: 'War',
+            priceFirst: '$24.99',
+            priceSecond: '$15.99',
+            priceThird: '$10.99',
+            sellerFirst: 'WarFan',
+            sellerSecond: 'ManhuaMaster',
+            sellerThird: 'BudgetWar',
+            descriptionFirst: 'Brand new War manhua poster featuring intense artwork.',
+            descriptionSecond: 'Excellent condition War poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still intense.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Intense artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still intense\n• Budget price'
+        },
+        'images (1)': {
+            title: 'Mountain',
+            priceFirst: '$22.99',
+            priceSecond: '$13.99',
+            priceThird: '$8.99',
+            sellerFirst: 'MountainFan',
+            sellerSecond: 'ManhuaLover',
+            sellerThird: 'BudgetMountain',
+            descriptionFirst: 'Brand new Mountain manhua poster featuring scenic artwork.',
+            descriptionSecond: 'Excellent condition Mountain poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still scenic.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Scenic artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still scenic\n• Affordable'
+        },
+        'images (2)': {
+            title: 'Politics',
+            priceFirst: '$25.99',
+            priceSecond: '$16.99',
+            priceThird: '$11.99',
+            sellerFirst: 'PoliticsFan',
+            sellerSecond: 'ManhuaCollector',
+            sellerThird: 'BudgetPolitics',
+            descriptionFirst: 'Brand new Politics manhua poster featuring dramatic artwork.',
+            descriptionSecond: 'Excellent condition Politics poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still dramatic.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Dramatic artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still dramatic\n• Budget price'
+        },
+        'images (3)': {
+            title: 'Farm',
+            priceFirst: '$21.99',
+            priceSecond: '$12.99',
+            priceThird: '$7.99',
+            sellerFirst: 'FarmFan',
+            sellerSecond: 'ManhuaMaster',
+            sellerThird: 'BudgetFarm',
+            descriptionFirst: 'Brand new Farm manhua poster featuring peaceful artwork.',
+            descriptionSecond: 'Excellent condition Farm poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still peaceful.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Peaceful artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still peaceful\n• Affordable'
+        },
+        'images (4)': {
+            title: 'Restaurant',
+            priceFirst: '$23.99',
+            priceSecond: '$14.99',
+            priceThird: '$9.99',
+            sellerFirst: 'RestaurantFan',
+            sellerSecond: 'ManhuaLover',
+            sellerThird: 'BudgetRestaurant',
+            descriptionFirst: 'Brand new Restaurant manhua poster featuring culinary artwork.',
+            descriptionSecond: 'Excellent condition Restaurant poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still culinary.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Culinary artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still culinary\n• Budget price'
+        },
+        'images': {
+            title: 'Fight',
+            priceFirst: '$24.99',
+            priceSecond: '$15.99',
+            priceThird: '$10.99',
+            sellerFirst: 'FightFan',
+            sellerSecond: 'ManhuaCollector',
+            sellerThird: 'BudgetFight',
+            descriptionFirst: 'Brand new Fight manhua poster featuring action artwork.',
+            descriptionSecond: 'Excellent condition Fight poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still action-packed.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Action artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still action-packed\n• Affordable'
+        },
+        'heaven list': {
+            title: 'Heaven List',
+            priceFirst: '$26.99',
+            priceSecond: '$17.99',
+            priceThird: '$12.99',
+            sellerFirst: 'HeavenFan',
+            sellerSecond: 'ManhuaMaster',
+            sellerThird: 'BudgetHeaven',
+            descriptionFirst: 'Brand new Heaven List manhua poster featuring divine artwork.',
+            descriptionSecond: 'Excellent condition Heaven List poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still divine.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Divine artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still divine\n• Budget price'
+        },
+        'Link_Click': {
+            title: 'Link Click',
+            priceFirst: '$25.99',
+            priceSecond: '$16.99',
+            priceThird: '$11.99',
+            sellerFirst: 'LinkClickFan',
+            sellerSecond: 'ManhuaLover',
+            sellerThird: 'BudgetLink',
+            descriptionFirst: 'Brand new Link Click manhua poster featuring mysterious artwork.',
+            descriptionSecond: 'Excellent condition Link Click poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still mysterious.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Mysterious artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still mysterious\n• Affordable'
+        },
+        'Link_Click.webp': {
+            title: 'Link Click',
+            priceFirst: '$25.99',
+            priceSecond: '$16.99',
+            priceThird: '$11.99',
+            sellerFirst: 'LinkClickFan',
+            sellerSecond: 'ManhuaLover',
+            sellerThird: 'BudgetLink',
+            descriptionFirst: 'Brand new Link Click manhua poster featuring mysterious artwork.',
+            descriptionSecond: 'Excellent condition Link Click poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still mysterious.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Mysterious artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still mysterious\n• Affordable'
+        },
+        'Magic emperor': {
+            title: 'Magic Emperor',
+            priceFirst: '$27.99',
+            priceSecond: '$18.99',
+            priceThird: '$13.99',
+            sellerFirst: 'MagicFan',
+            sellerSecond: 'ManhuaCollector',
+            sellerThird: 'BudgetMagic',
+            descriptionFirst: 'Brand new Magic Emperor manhua poster featuring magical artwork.',
+            descriptionSecond: 'Excellent condition Magic Emperor poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still magical.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Magical artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still magical\n• Budget price'
+        },
+        'Magic emperor.jpeg': {
+            title: 'Magic Emperor',
+            priceFirst: '$27.99',
+            priceSecond: '$18.99',
+            priceThird: '$13.99',
+            sellerFirst: 'MagicFan',
+            sellerSecond: 'ManhuaCollector',
+            sellerThird: 'BudgetMagic',
+            descriptionFirst: 'Brand new Magic Emperor manhua poster featuring magical artwork.',
+            descriptionSecond: 'Excellent condition Magic Emperor poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still magical.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Magical artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still magical\n• Budget price'
+        },
+        '65834': {
+            title: 'The Lost World',
+            priceFirst: '$28.99',
+            priceSecond: '$18.99',
+            priceThird: '$13.99',
+            sellerFirst: 'LostWorldFan',
+            sellerSecond: 'ComicCollector',
+            sellerThird: 'BudgetLost',
+            descriptionFirst: 'Brand new The Lost World comic poster featuring adventure artwork.',
+            descriptionSecond: 'Excellent condition The Lost World poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still adventurous.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Adventure artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still adventurous\n• Affordable'
+        },
+        '70180': {
+            title: 'Ghost Rider',
+            priceFirst: '$29.99',
+            priceSecond: '$19.99',
+            priceThird: '$14.99',
+            sellerFirst: 'GhostRiderFan',
+            sellerSecond: 'MarvelCollector',
+            sellerThird: 'BudgetGhost',
+            descriptionFirst: 'Brand new Ghost Rider comic poster featuring supernatural artwork.',
+            descriptionSecond: 'Excellent condition Ghost Rider poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still supernatural.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Supernatural artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still supernatural\n• Budget price'
+        },
+        'download (1)': {
+            title: 'Spiderman',
+            priceFirst: '$31.99',
+            priceSecond: '$21.99',
+            priceThird: '$16.99',
+            sellerFirst: 'SpidermanFan',
+            sellerSecond: 'MarvelMaster',
+            sellerThird: 'BudgetSpidey',
+            descriptionFirst: 'Brand new Spiderman comic poster featuring web-slinging artwork.',
+            descriptionSecond: 'Excellent condition Spiderman poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still web-slinging.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Web-slinging artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still web-slinging\n• Affordable'
+        },
+        'f8b036072120e8f350b5f7737391157d_original': {
+            title: 'Cowboy',
+            priceFirst: '$26.99',
+            priceSecond: '$16.99',
+            priceThird: '$11.99',
+            sellerFirst: 'CowboyFan',
+            sellerSecond: 'WesternCollector',
+            sellerThird: 'BudgetCowboy',
+            descriptionFirst: 'Brand new Cowboy comic poster featuring western artwork.',
+            descriptionSecond: 'Excellent condition Cowboy poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still western.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Western artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still western\n• Budget price'
+        },
+        'Western_Comics_1': {
+            title: 'Cowboys 2',
+            priceFirst: '$27.99',
+            priceSecond: '$17.99',
+            priceThird: '$12.99',
+            sellerFirst: 'CowboysFan',
+            sellerSecond: 'WesternMaster',
+            sellerThird: 'BudgetCowboys',
+            descriptionFirst: 'Brand new Cowboys 2 comic poster featuring wild west artwork.',
+            descriptionSecond: 'Excellent condition Cowboys 2 poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still wild west.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Wild west artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still wild west\n• Affordable'
+        },
+        'Ultimate spider man': {
+            title: 'Ultimate Spider-Man',
+            priceFirst: '$32.99',
+            priceSecond: '$22.99',
+            priceThird: '$17.99',
+            sellerFirst: 'UltimateSpideyFan',
+            sellerSecond: 'MarvelCollector',
+            sellerThird: 'BudgetUltimate',
+            descriptionFirst: 'Brand new Ultimate Spider-Man comic poster featuring modern artwork.',
+            descriptionSecond: 'Excellent condition Ultimate Spider-Man poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still modern.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Modern artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still modern\n• Budget price'
+        },
+        'Amazing_Fantasy_15': {
+            title: 'Amazing Fantasy #15',
+            priceFirst: '$89.99',
+            priceSecond: '$69.99',
+            priceThird: '$49.99',
+            sellerFirst: 'ComicLegend',
+            sellerSecond: 'VintageCollector',
+            sellerThird: 'BudgetLegend',
+            descriptionFirst: 'Brand new Amazing Fantasy #15 comic poster featuring classic artwork.',
+            descriptionSecond: 'Excellent condition Amazing Fantasy #15 poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still classic.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Classic artwork\n• No damage\n• Collector\'s item',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still classic\n• Affordable'
+        },
+        'Action_Comics': {
+            title: 'Action Comics',
+            priceFirst: '$79.99',
+            priceSecond: '$59.99',
+            priceThird: '$39.99',
+            sellerFirst: 'SupermanFan',
+            sellerSecond: 'DCCollector',
+            sellerThird: 'BudgetSuperman',
+            descriptionFirst: 'Brand new Action Comics poster featuring Superman artwork.',
+            descriptionSecond: 'Excellent condition Action Comics poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still super.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Superman artwork\n• No damage\n• Collector\'s item',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still super\n• Affordable'
+        },
+        'titans #1 landscape format marvel uk': {
+            title: 'Titans #1',
+            priceFirst: '$34.99',
+            priceSecond: '$24.99',
+            priceThird: '$19.99',
+            sellerFirst: 'TitansFan',
+            sellerSecond: 'DCCollector',
+            sellerThird: 'BudgetTitans',
+            descriptionFirst: 'Brand new Titans #1 comic poster featuring team artwork.',
+            descriptionSecond: 'Excellent condition Titans #1 poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still team-focused.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Team artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still team-focused\n• Budget price'
+        },
+        'titans #1 landscape format marvel uk.jpg': {
+            title: 'Titans #1',
+            priceFirst: '$34.99',
+            priceSecond: '$24.99',
+            priceThird: '$19.99',
+            sellerFirst: 'TitansFan',
+            sellerSecond: 'DCCollector',
+            sellerThird: 'BudgetTitans',
+            descriptionFirst: 'Brand new Titans #1 comic poster featuring team artwork.',
+            descriptionSecond: 'Excellent condition Titans #1 poster with minimal wear.',
+            descriptionThird: 'Well-used poster with some wear but still team-focused.',
+            conditionDetailsFirst: '• Brand new poster\n• Perfect condition\n• Team artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still team-focused\n• Budget price'
+        },
+        '33f7251d-3c3d-4223-be32-0c637c4164f3': {
+            title: 'Sentinel',
+            priceFirst: '$29.99',
+            priceSecond: '$19.99',
+            priceThird: '$14.99',
+            sellerFirst: 'SentinelFan',
+            sellerSecond: 'NovelCollector',
+            sellerThird: 'BudgetSentinel',
+            descriptionFirst: 'Brand new Sentinel novel cover featuring protective artwork.',
+            descriptionSecond: 'Excellent condition Sentinel cover with minimal wear.',
+            descriptionThird: 'Well-used cover with some wear but still protective.',
+            conditionDetailsFirst: '• Brand new cover\n• Perfect condition\n• Protective artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still protective\n• Budget price'
+        },
+        '33f7251d-3c3d-4223-be32-0c637c4164f3.jpg': {
+            title: 'Sentinel',
+            priceFirst: '$29.99',
+            priceSecond: '$19.99',
+            priceThird: '$14.99',
+            sellerFirst: 'SentinelFan',
+            sellerSecond: 'NovelCollector',
+            sellerThird: 'BudgetSentinel',
+            descriptionFirst: 'Brand new Sentinel novel cover featuring protective artwork.',
+            descriptionSecond: 'Excellent condition Sentinel cover with minimal wear.',
+            descriptionThird: 'Well-used cover with some wear but still protective.',
+            conditionDetailsFirst: '• Brand new cover\n• Perfect condition\n• Protective artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still protective\n• Budget price'
+        },
+        '4f971bfe-2ea6-4ff7-8c5a-7eba039fa15c': {
+            title: 'Secrets',
+            priceFirst: '$28.99',
+            priceSecond: '$18.99',
+            priceThird: '$13.99',
+            sellerFirst: 'SecretsFan',
+            sellerSecond: 'MysteryCollector',
+            sellerThird: 'BudgetSecrets',
+            descriptionFirst: 'Brand new Secrets novel cover featuring mysterious artwork.',
+            descriptionSecond: 'Excellent condition Secrets cover with minimal wear.',
+            descriptionThird: 'Well-used cover with some wear but still mysterious.',
+            conditionDetailsFirst: '• Brand new cover\n• Perfect condition\n• Mysterious artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still mysterious\n• Affordable'
+        },
+        '9f7d82bf-735b-4800-9672-c17602938a77': {
+            title: 'Saving Madonna',
+            priceFirst: '$27.99',
+            priceSecond: '$17.99',
+            priceThird: '$12.99',
+            sellerFirst: 'MadonnaFan',
+            sellerSecond: 'DramaCollector',
+            sellerThird: 'BudgetMadonna',
+            descriptionFirst: 'Brand new Saving Madonna novel cover featuring dramatic artwork.',
+            descriptionSecond: 'Excellent condition Saving Madonna cover with minimal wear.',
+            descriptionThird: 'Well-used cover with some wear but still dramatic.',
+            conditionDetailsFirst: '• Brand new cover\n• Perfect condition\n• Dramatic artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still dramatic\n• Budget price'
+        },
+        'attachment_124417681': {
+            title: 'Backstory',
+            priceFirst: '$26.99',
+            priceSecond: '$16.99',
+            priceThird: '$11.99',
+            sellerFirst: 'BackstoryFan',
+            sellerSecond: 'VintageCollector',
+            sellerThird: 'BudgetBackstory',
+            descriptionFirst: 'Brand new Backstory novel cover featuring historical artwork.',
+            descriptionSecond: 'Excellent condition Backstory cover with minimal wear.',
+            descriptionThird: 'Well-used cover with some wear but still historical.',
+            conditionDetailsFirst: '• Brand new cover\n• Perfect condition\n• Historical artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still historical\n• Affordable'
+        },
+        'Diary of the farting creeper': {
+            title: 'Diary of the Farting Creeper',
+            priceFirst: '$24.99',
+            priceSecond: '$14.99',
+            priceThird: '$9.99',
+            sellerFirst: 'CreeperFan',
+            sellerSecond: 'ComedyCollector',
+            sellerThird: 'BudgetCreeper',
+            descriptionFirst: 'Brand new Diary of the Farting Creeper novel cover featuring humorous artwork.',
+            descriptionSecond: 'Excellent condition Diary of the Farting Creeper cover with minimal wear.',
+            descriptionThird: 'Well-used cover with some wear but still humorous.',
+            conditionDetailsFirst: '• Brand new cover\n• Perfect condition\n• Humorous artwork\n• No damage\n• Ready to display',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still humorous\n• Budget price'
+        },
+        'The Cheater': {
+            title: 'The Cheater',
+            priceFirst: '$25.99',
+            priceSecond: '$15.99',
+            priceThird: '$10.99',
+            sellerFirst: 'CheaterFan',
+            sellerSecond: 'ThrillerCollector',
+            sellerThird: 'BudgetCheater',
+            descriptionFirst: 'Brand new The Cheater novel cover featuring suspenseful artwork.',
+            descriptionSecond: 'Excellent condition The Cheater cover with minimal wear.',
+            descriptionThird: 'Well-used cover with some wear but still suspenseful.',
+            conditionDetailsFirst: '• Brand new cover\n• Perfect condition\n• Suspenseful artwork\n• No damage\n• Ready to frame',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still suspenseful\n• Affordable'
+        },
+        'Harrypotter': {
+            title: 'Harry Potter',
+            priceFirst: '$39.99',
+            priceSecond: '$29.99',
+            priceThird: '$24.99',
+            sellerFirst: 'PotterFan',
+            sellerSecond: 'FantasyCollector',
+            sellerThird: 'BudgetPotter',
+            descriptionFirst: 'Brand new Harry Potter novel cover featuring magical artwork.',
+            descriptionSecond: 'Excellent condition Harry Potter cover with minimal wear.',
+            descriptionThird: 'Well-used cover with some wear but still magical.',
+            conditionDetailsFirst: '• Brand new cover\n• Perfect condition\n• Magical artwork\n• No damage\n• Collector\'s item',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Artwork intact\n• Frame-ready\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Artwork visible\n• Still magical\n• Budget price'
+        },
+        'cutter knife': {
+            title: 'Cutter Knife',
+            priceFirst: '$12.99',
+            priceSecond: '$8.99',
+            priceThird: '$5.99',
+            sellerFirst: 'ArtSupplies',
+            sellerSecond: 'StationaryCollector',
+            sellerThird: 'BudgetArt',
+            descriptionFirst: 'Brand new cutter knife for precise cutting and crafting.',
+            descriptionSecond: 'Excellent condition cutter knife with minimal wear.',
+            descriptionThird: 'Well-used cutter knife with some wear but still functional.',
+            conditionDetailsFirst: '• Brand new knife\n• Perfect condition\n• Sharp blade\n• No damage\n• Ready to use',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Blade intact\n• Still sharp\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Blade visible\n• Still functional\n• Budget price'
+        },
+        'highlights': {
+            title: 'Highlights',
+            priceFirst: '$8.99',
+            priceSecond: '$5.99',
+            priceThird: '$3.99',
+            sellerFirst: 'StudySupplies',
+            sellerSecond: 'StationaryLover',
+            sellerThird: 'BudgetStudy',
+            descriptionFirst: 'Brand new highlighters for effective studying and note-taking.',
+            descriptionSecond: 'Excellent condition highlighters with minimal wear.',
+            descriptionThird: 'Well-used highlighters with some wear but still colorful.',
+            conditionDetailsFirst: '• Brand new highlighters\n• Perfect condition\n• Bright colors\n• No damage\n• Ready to use',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Colors intact\n• Still bright\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Colors visible\n• Still colorful\n• Affordable'
+        },
+        'pens': {
+            title: 'Pens',
+            priceFirst: '$9.99',
+            priceSecond: '$6.99',
+            priceThird: '$4.99',
+            sellerFirst: 'WritingSupplies',
+            sellerSecond: 'PenCollector',
+            sellerThird: 'BudgetWriting',
+            descriptionFirst: 'Brand new pens for smooth writing and drawing.',
+            descriptionSecond: 'Excellent condition pens with minimal wear.',
+            descriptionThird: 'Well-used pens with some wear but still smooth.',
+            conditionDetailsFirst: '• Brand new pens\n• Perfect condition\n• Smooth writing\n• No damage\n• Ready to use',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Writing intact\n• Still smooth\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Writing visible\n• Still smooth\n• Budget price'
+        },
+        'mechanical pencil': {
+            title: 'Mechanical Pencil',
+            priceFirst: '$7.99',
+            priceSecond: '$4.99',
+            priceThird: '$2.99',
+            sellerFirst: 'PencilSupplies',
+            sellerSecond: 'PencilCollector',
+            sellerThird: 'BudgetPencil',
+            descriptionFirst: 'Brand new mechanical pencil for precise drawing and writing.',
+            descriptionSecond: 'Excellent condition mechanical pencil with minimal wear.',
+            descriptionThird: 'Well-used mechanical pencil with some wear but still precise.',
+            conditionDetailsFirst: '• Brand new pencil\n• Perfect condition\n• Precise lead\n• No damage\n• Ready to use',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Lead intact\n• Still precise\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Lead visible\n• Still precise\n• Affordable'
+        },
+        'pencil': {
+            title: 'Pencil',
+            priceFirst: '$6.99',
+            priceSecond: '$3.99',
+            priceThird: '$1.99',
+            sellerFirst: 'BasicSupplies',
+            sellerSecond: 'PencilLover',
+            sellerThird: 'BudgetBasic',
+            descriptionFirst: 'Brand new pencil for classic writing and drawing.',
+            descriptionSecond: 'Excellent condition pencil with minimal wear.',
+            descriptionThird: 'Well-used pencil with some wear but still classic.',
+            conditionDetailsFirst: '• Brand new pencil\n• Perfect condition\n• Classic design\n• No damage\n• Ready to use',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Design intact\n• Still classic\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Design visible\n• Still classic\n• Budget price'
+        },
+        'water colour': {
+            title: 'Water Colour',
+            priceFirst: '$15.99',
+            priceSecond: '$10.99',
+            priceThird: '$7.99',
+            sellerFirst: 'ArtSupplies',
+            sellerSecond: 'PaintCollector',
+            sellerThird: 'BudgetPaint',
+            descriptionFirst: 'Brand new water color set for beautiful artwork.',
+            descriptionSecond: 'Excellent condition water colors with minimal wear.',
+            descriptionThird: 'Well-used water colors with some wear but still beautiful.',
+            conditionDetailsFirst: '• Brand new set\n• Perfect condition\n• Beautiful colors\n• No damage\n• Ready to paint',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Colors intact\n• Still beautiful\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Colors visible\n• Still beautiful\n• Affordable'
+        },
+        'colour pencils': {
+            title: 'Colour Pencils',
+            priceFirst: '$11.99',
+            priceSecond: '$7.99',
+            priceThird: '$4.99',
+            sellerFirst: 'ColorSupplies',
+            sellerSecond: 'PencilCollector',
+            sellerThird: 'BudgetColor',
+            descriptionFirst: 'Brand new color pencils for vibrant artwork.',
+            descriptionSecond: 'Excellent condition color pencils with minimal wear.',
+            descriptionThird: 'Well-used color pencils with some wear but still vibrant.',
+            conditionDetailsFirst: '• Brand new set\n• Perfect condition\n• Vibrant colors\n• No damage\n• Ready to draw',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Colors intact\n• Still vibrant\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Colors visible\n• Still vibrant\n• Budget price'
+        },
+        'gel highlighter': {
+            title: 'Gel Highlighter',
+            priceFirst: '$10.99',
+            priceSecond: '$6.99',
+            priceThird: '$3.99',
+            sellerFirst: 'GelSupplies',
+            sellerSecond: 'HighlighterCollector',
+            sellerThird: 'BudgetGel',
+            descriptionFirst: 'Brand new gel highlighter for smooth highlighting.',
+            descriptionSecond: 'Excellent condition gel highlighter with minimal wear.',
+            descriptionThird: 'Well-used gel highlighter with some wear but still smooth.',
+            conditionDetailsFirst: '• Brand new highlighter\n• Perfect condition\n• Smooth gel\n• No damage\n• Ready to use',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Gel intact\n• Still smooth\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Gel visible\n• Still smooth\n• Affordable'
+        },
+        'Ink pen': {
+            title: 'Ink Pen',
+            priceFirst: '$13.99',
+            priceSecond: '$8.99',
+            priceThird: '$5.99',
+            sellerFirst: 'InkSupplies',
+            sellerSecond: 'PenCollector',
+            sellerThird: 'BudgetInk',
+            descriptionFirst: 'Brand new ink pen for elegant writing and drawing.',
+            descriptionSecond: 'Excellent condition ink pen with minimal wear.',
+            descriptionThird: 'Well-used ink pen with some wear but still elegant.',
+            conditionDetailsFirst: '• Brand new pen\n• Perfect condition\n• Elegant ink\n• No damage\n• Ready to write',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Ink intact\n• Still elegant\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Ink visible\n• Still elegant\n• Budget price'
+        },
+        'Ink pen.jpg': {
+            title: 'Ink Pen',
+            priceFirst: '$13.99',
+            priceSecond: '$8.99',
+            priceThird: '$5.99',
+            sellerFirst: 'InkSupplies',
+            sellerSecond: 'PenCollector',
+            sellerThird: 'BudgetInk',
+            descriptionFirst: 'Brand new ink pen for elegant writing and drawing.',
+            descriptionSecond: 'Excellent condition ink pen with minimal wear.',
+            descriptionThird: 'Well-used ink pen with some wear but still elegant.',
+            conditionDetailsFirst: '• Brand new pen\n• Perfect condition\n• Elegant ink\n• No damage\n• Ready to write',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Ink intact\n• Still elegant\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Ink visible\n• Still elegant\n• Budget price'
+        },
+        'manga making paper': {
+            title: 'Manga Making Paper',
+            priceFirst: '$18.99',
+            priceSecond: '$12.99',
+            priceThird: '$8.99',
+            sellerFirst: 'MangaSupplies',
+            sellerSecond: 'PaperCollector',
+            sellerThird: 'BudgetManga',
+            descriptionFirst: 'Brand new manga making paper for professional artwork.',
+            descriptionSecond: 'Excellent condition manga paper with minimal wear.',
+            descriptionThird: 'Well-used manga paper with some wear but still professional.',
+            conditionDetailsFirst: '• Brand new paper\n• Perfect condition\n• Professional quality\n• No damage\n• Ready to draw',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Quality intact\n• Still professional\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Quality visible\n• Still professional\n• Budget price'
+        },
+        'manga making paper.png': {
+            title: 'Manga Making Paper',
+            priceFirst: '$18.99',
+            priceSecond: '$12.99',
+            priceThird: '$8.99',
+            sellerFirst: 'MangaSupplies',
+            sellerSecond: 'PaperCollector',
+            sellerThird: 'BudgetManga',
+            descriptionFirst: 'Brand new manga making paper for professional artwork.',
+            descriptionSecond: 'Excellent condition manga paper with minimal wear.',
+            descriptionThird: 'Well-used manga paper with some wear but still professional.',
+            conditionDetailsFirst: '• Brand new paper\n• Perfect condition\n• Professional quality\n• No damage\n• Ready to draw',
+            conditionDetailsSecond: '• Excellent condition\n• Minor wear\n• Quality intact\n• Still professional\n• Great value',
+            conditionDetailsThird: '• Well-used condition\n• Some wear\n• Quality visible\n• Still professional\n• Budget price'
+        }
+        // Add more products as needed
+    };
+
+    // Helper function to extract image name from path
+    function getImageNameFromPath(path) {
+        const decodedPath = decodeURIComponent(path);
+        const filename = decodedPath.split('/').pop();
+        const nameWithoutExt = filename.split('.').slice(0, -1).join('.');
+        return nameWithoutExt;
+    }
+
+    // Function to get URL parameters
+    function getUrlParameter(name) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+        const results = regex.exec(window.location.href);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    // Function to update product details based on condition
+    function updateProductDetails(imagePath, condition) {
+        const mainImage = document.getElementById('main-product-image');
+        const conditionBadge = document.getElementById('condition-badge');
+        const conditionInfo = document.getElementById('condition-info');
+        
+        if (imagePath) {
+            mainImage.src = imagePath;
+            const imageName = getImageNameFromPath(imagePath);
+            console.log('Extracted image name:', imageName);
+            const product = products[imageName];
+            
+            if (product) {
+                console.log('Product found:', product.title);
+                // Update title
+                document.querySelector('.product-title').textContent = product.title;
+                
+                // Update condition badge
+                conditionBadge.textContent = condition;
+                conditionBadge.className = `condition-badge ${condition.toLowerCase().replace(' ', '')}`;
+                
+                // Update price based on condition
+                let price, seller, description, conditionDetails;
+                switch(condition.toLowerCase()) {
+                    case 'first hand':
+                        price = product.priceFirst;
+                        seller = product.sellerFirst;
+                        description = product.descriptionFirst;
+                        conditionDetails = product.conditionDetailsFirst;
+                        break;
+                    case 'second hand':
+                        price = product.priceSecond;
+                        seller = product.sellerSecond;
+                        description = product.descriptionSecond;
+                        conditionDetails = product.conditionDetailsSecond;
+                        break;
+                    case 'third hand':
+                        price = product.priceThird;
+                        seller = product.sellerThird;
+                        description = product.descriptionThird;
+                        conditionDetails = product.conditionDetailsThird;
+                        break;
+                    default:
+                        price = product.priceFirst;
+                        seller = product.sellerFirst;
+                        description = product.descriptionFirst;
+                        conditionDetails = product.conditionDetailsFirst;
+                }
+                
+                document.querySelector('.product-price').textContent = price;
+                document.querySelector('.product-description').textContent = description;
+                document.querySelector('.seller-name').textContent = seller;
+                conditionInfo.innerHTML = conditionDetails.replace(/\n/g, '<br>');
+                mainImage.alt = product.title;
+            } else {
+                console.log('Product not found for image name:', imageName);
+                console.log('Available product keys:', Object.keys(products));
+                // Fallback for products not in database
+                const fallbackTitle = imageName.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                document.querySelector('.product-title').textContent = fallbackTitle;
+                document.querySelector('.product-price').textContent = '$29.99';
+                document.querySelector('.product-description').textContent = 'A beautiful product in excellent condition.';
+                document.querySelector('.seller-name').textContent = 'OtakuHaven';
+                conditionInfo.innerHTML = '• Excellent condition<br>• Ready to display<br>• Great value';
+                mainImage.alt = fallbackTitle;
+            }
+        }
+    }
+
+    // Random good reviews for all products
+    const randomReviews = [
+        {
+            author: "AnimeFan2024",
+            rating: 5,
+            text: "Absolutely stunning artwork! The quality is exceptional and it looks perfect on my wall. Highly recommend for any anime fan!",
+            date: "2024-01-15"
+        },
+        {
+            author: "MangaCollector",
+            rating: 5,
+            text: "This is exactly what I was looking for. The colors are vibrant and the print quality is top-notch. Worth every penny!",
+            date: "2024-01-12"
+        },
+        {
+            author: "OtakuLife",
+            rating: 4,
+            text: "Great addition to my collection! The design is beautiful and it arrived in perfect condition. Will definitely buy more!",
+            date: "2024-01-10"
+        },
+        {
+            author: "WeebMaster",
+            rating: 5,
+            text: "Incredible quality! The poster is even better in person than in the photos. Fast shipping and excellent packaging.",
+            date: "2024-01-08"
+        },
+        {
+            author: "AnimeLover99",
+            rating: 4,
+            text: "Love this poster! The artwork is amazing and it's the perfect size for my room. Highly satisfied with my purchase!",
+            date: "2024-01-05"
+        }
+    ];
+
+    // Function to display reviews
+    function displayReviews() {
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        
+        // Separate user reviews from other reviews
+        const userReviews = randomReviews.filter(review => review.isUserReview);
+        const otherReviews = randomReviews.filter(review => !review.isUserReview);
+        
+        // Shuffle other reviews and take first 3
+        const shuffledOtherReviews = otherReviews.sort(() => 0.5 - Math.random()).slice(0, 3);
+        
+        // Combine user reviews (at top) with other reviews
+        const reviewsToShow = [...userReviews, ...shuffledOtherReviews];
+        
+        reviewsContainer.innerHTML = '';
+        
+        reviewsToShow.forEach(review => {
+            const reviewElement = document.createElement('div');
+            reviewElement.className = 'review-item';
+            
+            // Add special class for user reviews
+            if (review.isUserReview) {
+                reviewElement.classList.add('user-review');
+            }
+            
+            reviewElement.innerHTML = `
+                <div class="review-header">
+                    <span class="review-author">${review.author}</span>
+                    <div class="review-rating">
+                        ${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}
+                    </div>
+                    <span class="review-date">${review.date}</span>
+                </div>
+                <div class="review-text">${review.text}</div>
+            `;
+            reviewsContainer.appendChild(reviewElement);
+        });
+    }
+
+    // Function to handle review form submission
+    function handleReviewSubmission(event) {
+        event.preventDefault();
+        const form = event.target;
+        const rating = form.querySelector('input[name="rating"]:checked');
+        const reviewText = form.querySelector('.review-input').value;
+        
+        if (!rating) {
+            alert('Please select a rating');
+            return;
+        }
+        
+        if (!reviewText.trim()) {
+            alert('Please write a review');
+            return;
+        }
+        
+        // Create a new review object
+        const newReview = {
+            author: 'You',
+            rating: parseInt(rating.value),
+            date: 'Just now',
+            text: reviewText.trim(),
+            isUserReview: true
+        };
+        
+        // Add the new review to the beginning of the reviews array
+        randomReviews.unshift(newReview);
+        
+        // Display updated reviews
+        displayReviews();
+        
+        // Reset form
+        form.reset();
+        
+        // Show success message and scroll to the review
+        alert('Review submitted successfully! Your review is now visible above.');
+        
+        // Scroll to the reviews section to show the new review
+        const reviewsSection = document.querySelector('.reviews-section');
+        if (reviewsSection) {
+            reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // When the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageParam = getUrlParameter('image');
+        const conditionParam = getUrlParameter('condition');
+        
+        console.log('URL parameters:', { image: imageParam, condition: conditionParam });
+        
+        if (imageParam) {
+            updateProductDetails(imageParam, conditionParam || 'First Hand');
+        } else {
+            console.log('No image parameter provided');
+        }
+        
+        // Display reviews
+        displayReviews();
+        
+        // Add event listeners
+        const buyBtn = document.querySelector('.btn-buy');
+        const addToCartBtn = document.querySelector('.btn-add-to-cart');
+        const wishlistBtn = document.querySelector('.btn-wishlist');
+        const reviewForm = document.getElementById('reviewForm');
+        
+        addToCartBtn.addEventListener('click', function() {
+            // Gather product info
+            const imageParam = getUrlParameter('image');
+            const conditionParam = getUrlParameter('condition') || 'First Hand';
+            const mainImage = document.getElementById('main-product-image').src;
+            const title = document.querySelector('.product-title').textContent;
+            const price = document.querySelector('.product-price').textContent;
+            const seller = document.querySelector('.seller-name').textContent;
+            const description = document.querySelector('.product-description').textContent;
+            const product = {
+                image: mainImage,
+                title: title,
+                price: price,
+                seller: seller,
+                description: description,
+                condition: conditionParam,
+                quantity: 1
+            };
+            
+            // Get cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            
+            // Check if product already exists in cart (by title and condition)
+            const existingItemIndex = cart.findIndex(item => 
+                item.title === product.title && item.condition === product.condition
+            );
+            
+            if (existingItemIndex !== -1) {
+                // If product exists, increase quantity
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                // If product doesn't exist, add it
+                cart.push(product);
+            }
+            
+            // Save updated cart
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Show success message
+            alert('Product added to cart successfully!');
+            
+            // Update cart badge on homepage if it exists
+            updateCartBadge();
+        });
+        
+        buyBtn.addEventListener('click', function() {
+            const imageParam = getUrlParameter('image');
+            const conditionParam = getUrlParameter('condition') || 'First Hand';
+            const mainImage = document.getElementById('main-product-image').src;
+            const title = document.querySelector('.product-title').textContent;
+            const price = document.querySelector('.product-price').textContent;
+            const seller = document.querySelector('.seller-name').textContent;
+            const description = document.querySelector('.product-description').textContent;
+            const product = {
+                image: mainImage,
+                title: title,
+                price: price,
+                seller: seller,
+                description: description,
+                condition: conditionParam
+            };
+            localStorage.setItem('buyNow', JSON.stringify(product));
+            window.location.href = 'buy.html';
+        });
+        
+        wishlistBtn.addEventListener('click', function() {
+            // Gather product info
+            const imageParam = getUrlParameter('image');
+            const conditionParam = getUrlParameter('condition') || 'First Hand';
+            const mainImage = document.getElementById('main-product-image').src;
+            const title = document.querySelector('.product-title').textContent;
+            const price = document.querySelector('.product-price').textContent;
+            const seller = document.querySelector('.seller-name').textContent;
+            const description = document.querySelector('.product-description').textContent;
+            const product = {
+                image: mainImage,
+                title: title,
+                price: price,
+                seller: seller,
+                description: description,
+                condition: conditionParam
+            };
+            // Get wishlist from localStorage
+            let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            // Prevent duplicates (by title and condition)
+            if (!wishlist.some(item => item.title === product.title && item.condition === product.condition)) {
+                wishlist.push(product);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            }
+            window.location.href = 'wishlist.html';
+        });
+        
+        reviewForm.addEventListener('submit', handleReviewSubmission);
+        
+        // Function to update cart badge
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            
+            // Try to update badge on homepage if we're in an iframe or have access
+            try {
+                const badge = document.getElementById('wishlist-badge');
+                if (badge) {
+                    if (totalItems > 0) {
+                        badge.textContent = totalItems;
+                        badge.style.display = 'block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            } catch (e) {
+                // Badge not found, that's okay
+            }
+        }
+        
+        // Update cart badge on page load
+        updateCartBadge();
+    });
+</script>
+</body>
+</html>

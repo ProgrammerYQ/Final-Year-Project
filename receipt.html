@@ -1,0 +1,107 @@
+<!-- receipt.html - Static Aesthetic Matching PHP Layout -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Receipt</title>
+  <link rel="stylesheet" href="tsite-style.css">
+</head>
+<body class="tsite-theme receipt-background" style="background: url('images/unsplash_XFWiZTa2Ub0 (1).png') no-repeat center center fixed; background-size: cover;">
+  <section class="receipt-wrapper">
+    <h2>Order Receipt</h2>
+    <div id="receipt-content">
+      <!-- Receipt content will be populated here -->
+    </div>
+    <button class="button" onclick="window.location.href='OtakuHavenProto.html'">Return to Home</button>
+  </section>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const receiptContent = document.getElementById('receipt-content');
+      
+      // Get the most recent order from localStorage
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+      const latestOrder = orders[orders.length - 1];
+      
+      if (latestOrder) {
+        displayReceipt(latestOrder, receiptContent);
+      } else {
+        receiptContent.innerHTML = '<p>No order information found.</p>';
+      }
+    });
+
+    function displayReceipt(order, container) {
+      let totalPrice = 0;
+      let totalItems = 0;
+      
+      let html = `
+        <div style="background: rgba(255,255,255,0.95); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+          <h3 style="color: #333; margin-bottom: 15px;">Order Details</h3>
+          <p><strong>Order ID:</strong> ${order.orderId}</p>
+          <p><strong>Order Date:</strong> ${new Date(order.orderDate).toLocaleDateString()}</p>
+          <p><strong>Shipping Method:</strong> ${order.shipping}</p>
+          <p><strong>Payment Method:</strong> ${order.payment}</p>
+          <p><strong>Delivery Address:</strong> ${order.address}</p>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.95); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+          <h3 style="color: #333; margin-bottom: 15px;">Items Purchased</h3>
+      `;
+      
+      order.items.forEach((item, index) => {
+        const price = parseFloat(item.price.replace('$', ''));
+        const itemTotal = price * (item.quantity || 1);
+        totalPrice += itemTotal;
+        totalItems += (item.quantity || 1);
+        
+        html += `
+          <div style="border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; background: rgba(255,255,255,0.8);">
+            ${item.image ? `<img src="${item.image}" alt="${item.title}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;float:left;margin-right:15px;">` : ''}
+            <div style="overflow:hidden;">
+              <p><strong>Title:</strong> ${item.title}</p>
+              <p><strong>Condition:</strong> ${item.condition || 'N/A'}</p>
+              <p><strong>Seller:</strong> ${item.seller}</p>
+              <p><strong>Price:</strong> ${item.price}${item.quantity > 1 ? ` x ${item.quantity}` : ''} = $${itemTotal.toFixed(2)}</p>
+              <p><strong>Description:</strong> ${item.description}</p>
+            </div>
+            <div style="clear:both;"></div>
+          </div>
+        `;
+      });
+      
+      html += `
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.95); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+          <h3 style="color: #333; margin-bottom: 15px;">Order Summary</h3>
+          <p><strong>Total Items:</strong> ${totalItems}</p>
+          <p><strong>Total Amount:</strong> $${totalPrice.toFixed(2)}</p>
+          <p><strong>Shipping Status:</strong> <span style="color: #27ae60; font-weight: bold;">Processing</span></p>
+          <p><strong>Estimated Delivery:</strong> ${getEstimatedDelivery(order.shipping)}</p>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.95); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+          <h3 style="color: #333; margin-bottom: 15px;">Thank You!</h3>
+          <p>Your order has been successfully placed. You will receive a confirmation email shortly.</p>
+          <p>For any questions about your order, please contact us with your Order ID: <strong>${order.orderId}</strong></p>
+        </div>
+      `;
+      
+      container.innerHTML = html;
+    }
+
+    function getEstimatedDelivery(shippingMethod) {
+      const today = new Date();
+      let deliveryDate = new Date(today);
+      
+      if (shippingMethod === 'fast') {
+        deliveryDate.setDate(today.getDate() + 3); // 3 days for fast shipping
+        return deliveryDate.toLocaleDateString() + ' (Fast Shipping)';
+      } else {
+        deliveryDate.setDate(today.getDate() + 7); // 7 days for standard shipping
+        return deliveryDate.toLocaleDateString() + ' (Standard Shipping)';
+      }
+    }
+  </script>
+</body>
+</html>

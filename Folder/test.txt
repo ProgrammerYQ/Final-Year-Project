@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  Yongqi
 homepage
 search engine
@@ -209,3 +210,12 @@ publishing process
         display: none; /* Hide side note on mobile */
       }
     }
+=======
+hohohoho
+
+It's been 15 years since I saw her smile
+The way the sun reflects on her face
+The way her hair flows in the wind
+I'm tired...
+Is god looking down on me now?
+>>>>>>> 7076e51b3c619a3f30e67759f470d33af04febb4

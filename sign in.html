@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Otaku Haven</title>
+    <link rel="stylesheet" href="sign in.css">
+    <style type="text/css">
+        body{
+            background-image: url(background\ image.png);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-box" id="signup-form">
+            <h2>Create Your Account</h2>
+            <p class="subtitle">Join Otaku Haven and start your anime journey!</p>
+            
+            <form id="registrationForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="username">Username *</label>
+                    <input type="text" id="username" name="username" required placeholder="Choose a unique username">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number (optional)">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" required placeholder="Create a strong password">
+                    <div class="password-requirements">
+                        <small>Password must be at least 8 characters long</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password *</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                </div>
+
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name (optional)">
+                </div>
+
+                <div class="form-group">
+                    <label for="birthdate">Date of Birth</label>
+                    <input type="date" id="birthdate" name="birthdate">
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a> *</label>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="newsletter" name="newsletter">
+                    <label for="newsletter">Subscribe to our newsletter for updates and exclusive offers</label>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="signup-btn">Create Account</button>
+                    <button type="button" class="cancel-btn" onclick="window.location.href='OtakuHavenProto.html'">Cancel</button>
+                </div>
+
+                <div class="login-link">
+                    <p>Already have an account? <a href="login.html">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Terms of Service</h3>
+            <div class="modal-body">
+                <p>By using Otaku Haven, you agree to:</p>
+                <ul>
+                    <li>Provide accurate and complete information</li>
+                    <li>Maintain the security of your account</li>
+                    <li>Not use the service for illegal purposes</li>
+                    <li>Respect other users and their privacy</li>
+                    <li>Follow all applicable laws and regulations</li>
+                </ul>
+                <p>We reserve the right to modify these terms at any time.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Privacy Policy</h3>
+            <div class="modal-body">
+                <p>Your privacy is important to us. We collect and use your information to:</p>
+                <ul>
+                    <li>Provide and improve our services</li>
+                    <li>Process your orders and payments</li>
+                    <li>Send you important updates</li>
+                    <li>Personalize your experience</li>
+                    <li>Ensure security and prevent fraud</li>
+                </ul>
+                <p>We never sell your personal information to third parties.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and submission
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const username = formData.get('username');
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            const phone = formData.get('phone');
+            const fullName = formData.get('fullName');
+            const birthdate = formData.get('birthdate');
+            const terms = formData.get('terms');
+            const newsletter = formData.get('newsletter');
+
+            // Validation
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            if (!terms) {
+                alert('You must agree to the Terms of Service and Privacy Policy.');
+                return;
+            }
+
+            // Check if username already exists
+            const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+            const userExists = existingUsers.find(user => user.username === username || user.email === email);
+            
+            if (userExists) {
+                alert('Username or email already exists. Please choose a different one.');
+                return;
+            }
+
+            // Create new user
+            const newUser = {
+                username: username,
+                email: email,
+                password: password,
+                phone: phone || '',
+                fullName: fullName || '',
+                birthdate: birthdate || '',
+                newsletter: newsletter === 'on',
+                memberSince: new Date().toISOString(),
+                totalOrders: 0,
+                lastLogin: new Date().toISOString()
+            };
+
+            try {
+                // Save user to localStorage
+                existingUsers.push(newUser);
+                localStorage.setItem('users', JSON.stringify(existingUsers));
+
+                // Set current user (this logs them in)
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+                // Debug: Check if data was saved
+                console.log('User saved:', newUser);
+                console.log('Current user set:', localStorage.getItem('currentUser'));
+
+                // Show success message and redirect immediately
+                alert(`Account created successfully! Welcome to Otaku Haven, ${username}!`);
+                
+                // Redirect to homepage
+                window.location.href = 'OtakuHavenProto.html';
+                
+            } catch (error) {
+                console.error('Error during signup:', error);
+                alert('There was an error creating your account. Please try again.');
+            }
+        }
+
+        // Modal functionality
+        function showTerms() {
+            document.getElementById('termsModal').style.display = 'block';
+        }
+
+        function showPrivacy() {
+            document.getElementById('privacyModal').style.display = 'block';
+        }
+
+        // Close modals
+        document.addEventListener('DOMContentLoaded', function() {
+            const modals = document.querySelectorAll('.modal');
+            const closeBtns = document.querySelectorAll('.close');
+
+            closeBtns.forEach(btn => {
+                btn.onclick = function() {
+                    modals.forEach(modal => modal.style.display = 'none');
+                }
+            });
+
+            window.onclick = function(event) {
+                modals.forEach(modal => {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Real-time password confirmation check
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                this.style.borderColor = '#e74c3c';
+            } else {
+                this.style.borderColor = '#27ae60';
+            }
+        });
+
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const requirements = document.querySelector('.password-requirements');
+            
+            if (password.length >= 8) {
+                requirements.innerHTML = '<small style="color: #27ae60;">✓ Password meets requirements</small>';
+            } else {
+                requirements.innerHTML = '<small>Password must be at least 8 characters long</small>';
+            }
+        });
+    </script>
+</body>
+
+</html>

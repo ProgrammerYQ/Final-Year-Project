@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publish | Otaku Haven</title>
+    <link rel="stylesheet" href="publish.css">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="publish-bg"></div>
+    <div class="publish-modal">
+        <div class="tape-header">
+            <span>PUBLISH</span>
+        </div>
+        <form class="publish-form" id="publishForm">
+            <div class="form-left">
+                <label class="image-upload">
+                    <input type="file" accept="image/*" id="imageInput" style="display:none">
+                    <div class="image-placeholder">
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/image.png" alt="Upload"/>
+                    </div>
+                </label>
+                <input type="text" class="input author" id="authorInput" placeholder="Author" required>
+                <select class="select category" id="categorySelect" required>
+                    <option disabled selected>Category</option>
+                    <option value="Manga">Manga</option>
+                    <option value="Manhwa">Manhwa</option>
+                    <option value="Manhua">Manhua</option>
+                    <option value="Novel">Novel</option>
+                    <option value="Comic">Comic</option>
+                    <option value="Stationary">Stationary</option>
+                </select>
+            </div>
+            <div class="form-right">
+                <input type="text" class="input title" id="titleInput" placeholder="Title" required>
+                <input type="text" class="input address" id="addressInput" placeholder="Address" required>
+                <input type="text" class="input price" id="priceInput" placeholder="Price" required>
+                <textarea class="input description" id="descriptionInput" placeholder="Description" required></textarea>
+                <select class="select quality" id="qualitySelect" required>
+                    <option disabled selected>Quality</option>
+                    <option value="First Hand">First Hand</option>
+                    <option value="Second hand">Second hand</option>
+                    <option value="Third Hand">Third Hand</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn cancel" id="cancelBtn">CANCEL</button>
+                <button type="submit" class="btn publish">PUBLISH</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="paperbackground">
+        <img src="images/unsplash_XFWiZTa2Ub0 (1).png">
+    </div>
+
+    <div class="backgroundmain">
+        <img src="images/desk setup.jpg">
+    </div>
+
+    <script>
+        // Handle Cancel Button
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            window.location.href = 'OtakuHavenProto.html';
+        });
+
+        // Handle Image Upload Preview
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imagePlaceholder = document.querySelector('.image-placeholder img');
+                    imagePlaceholder.src = e.target.result;
+                    imagePlaceholder.style.width = '80px';
+                    imagePlaceholder.style.height = '80px';
+                    imagePlaceholder.style.filter = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle Form Submission
+        document.getElementById('publishForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                title: document.getElementById('titleInput').value,
+                author: document.getElementById('authorInput').value,
+                category: document.getElementById('categorySelect').value,
+                address: document.getElementById('addressInput').value,
+                price: document.getElementById('priceInput').value,
+                description: document.getElementById('descriptionInput').value,
+                quality: document.getElementById('qualitySelect').value,
+                image: document.getElementById('imageInput').files[0] ? 
+                       URL.createObjectURL(document.getElementById('imageInput').files[0]) : null,
+                datePublished: new Date().toISOString()
+            };
+
+            // Validate required fields
+            if (!formData.title || !formData.author || !formData.category || 
+                !formData.address || !formData.price || !formData.description || !formData.quality) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            // Save to localStorage
+            let publishedItems = JSON.parse(localStorage.getItem('publishedItems') || '[]');
+            publishedItems.push(formData);
+            localStorage.setItem('publishedItems', JSON.stringify(publishedItems));
+
+            // Show success message
+            alert('Item published successfully!');
+            
+            // Redirect to main page
+            window.location.href = 'OtakuHavenProto.html';
+        });
+    </script>
+</body>
+</html>
